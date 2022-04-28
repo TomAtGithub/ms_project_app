@@ -1,9 +1,9 @@
 # TODO
 
-- create git repo
-+ Record Audio -> seems to work
-- Play Audio
-- Create mfcc
-- Read model
-- Classify mfcc
-- Show label in GUI
+- [x] create git repo
+- [x] Record Audio
+- [] Play Audio
+- [] Create mfcc
+- [] Load model
+- [] Classify mfcc
+- [] Show label in GUI

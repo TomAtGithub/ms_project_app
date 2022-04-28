@@ -22,6 +22,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.Fragment
 import com.example.ms_project_android.databinding.ActivityMainBinding
 import java.io.File
 import java.io.IOException
@@ -30,7 +31,7 @@ import java.security.Permissions
 private const val LOG_TAG = "AudioRecordTest"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), RecordFragmentInterface {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -43,42 +44,54 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
 
+    override fun togglePlayback(): Boolean {
+        if(mAudioClassifier.isPlaying()) {
+            mAudioClassifier.pause()
+        } else {
+            mAudioClassifier.play()
+        }
+        return mAudioClassifier.isPlaying()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        val navController = findNavController(R.id.nav_host_fragment_content_main)
+//        appBarConfiguration = AppBarConfiguration(navController.graph)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 
         mAudioClassifier = AudioClassifier(this)
 
-        var isRecording = false
-        var that = this
+        var frag: Fragment = FirstFragment()
+        supportFragmentManager.beginTransaction().add(R.id.container, frag).commit()
 
         binding.fab.setOnClickListener { view ->
-
-            if(isRecording) {
+            val isRecording = mAudioClassifier.isRecording()
+            val nextFrag = if(isRecording) {
                 mAudioClassifier.stopRecording()
+                mAudioClassifier.load()
+                RecordedFragment.newInstance(mAudioClassifier.getStats())
+
             } else {
                 mAudioClassifier.startRecording()
+                RecordingFragment()
             }
-            isRecording = !isRecording
 
+            supportFragmentManager.beginTransaction().remove(frag).add(R.id.container,
+                nextFrag
+            ).commit()
+
+            frag = nextFrag
 
             Snackbar.make(view, "isRecording: $isRecording", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
-    }
-
-    private fun startActivity() {
-
     }
 
     override fun onRequestPermissionsResult(
@@ -115,42 +128,5 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-    }
-}
-
-class AudioClassifier(context: Context) {
-
-    private lateinit var record: AudioRecord
-    private var fileName = context.cacheDir.path + "/test"
-    private var mRecord = File(fileName)
-    private var mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        MediaRecorder(context)
-    } else {
-        MediaRecorder()
-    }
-
-    public fun startRecording() {
-        Log.d(LOG_TAG, "log to: $fileName")
-        mRecorder.reset()
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP)
-        mRecorder.setOutputFile(mRecord)
-        mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB)
-
-        try {
-            mRecorder.prepare()
-        } catch (e: IOException) {
-            Log.e(LOG_TAG, "prepare() failed")
-        }
-
-        mRecorder.start()
-    }
-    public fun stopRecording() {
-        mRecorder.stop()
-        mRecorder.reset()
-    }
-
-    public fun release() {
-        mRecorder.release()
     }
 }
