@@ -11,10 +11,10 @@ import java.io.IOException
 
 private const val LOG_TAG = "AudioRecorder"
 
-class AudioRecorder(context: Context, fileName: String) {
+class AudioRecorder(context: Context, filePath: String) {
+    private val filePath = filePath
 //    private val d = context.getExternalFilesDir("records")
 //    private val filePath = d!!.path + "/record1.wav"
-    private val filePath = context.externalCacheDir?.path + "/$fileName"
 //    private val filePath = context.filesDir?.path + "/$fileName"
 //    private var mRecord = file
 //    private val mRecord = File("test")

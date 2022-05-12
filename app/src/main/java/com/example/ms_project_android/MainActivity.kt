@@ -194,20 +194,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recordTest(context: Context) {
-        val fileName = "record9.wav"
+        val fileName = "record10.wav"
         val filePath = context.externalCacheDir?.path + "/$fileName"
-        val mAudioRecorder = AudioRecorder(context, fileName)
-        val mAudioClassifier = AudioClassifier2()
+        val mAudioRecorder = AudioRecorder(context, filePath)
+        val mfccExtractor = MFCCExtractor(40)
+        val duration: Long = 5000
 
-        Log.d(LOG_TAG, "MFCC classification started, recording wav file for 1 seconds")
-//        mAudioRecorder.startRecording()
+        Log.d(LOG_TAG, "MFCC classification started, recording wav file for $duration ms")
+        mAudioRecorder.startRecording()
 
         val handler = Handler()
         handler.postDelayed(Runnable {
             // Actions to do after 10 seconds
-//            mAudioRecorder.stopRecording()
-            val mfcc = mAudioClassifier.getMfcc(filePath)
+            mAudioRecorder.stopRecording()
+            val mfcc = mfccExtractor.getMeanMFCC(filePath)
             Log.d(LOG_TAG, "MFCC classification finished")
-        }, 5000)
+        }, duration)
     }
 }
