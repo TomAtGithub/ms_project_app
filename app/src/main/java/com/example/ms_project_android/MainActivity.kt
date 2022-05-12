@@ -7,35 +7,36 @@ package com.example.ms_project_android
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.AudioRecord
-import android.media.MediaPlayer
-import android.media.MediaRecorder
-import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import com.example.ms_project_android.databinding.ActivityMainBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import java.io.File
-import java.io.IOException
-import java.security.Permissions
+import kotlin.experimental.and
 
 private const val LOG_TAG = "AudioRecordTest"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
 
-class MainActivity : AppCompatActivity(), RecordFragmentInterface {
+private fun getLE(buffer: ByteArray, pos: Int, numBytes: Int): Long {
+    var pos = pos
+    var numBytes = numBytes
+    numBytes--
+    pos += numBytes
+    var `val`: Long = (buffer[pos] and 0xFF.toByte()).toLong()
+    for (b in 0 until numBytes) `val` = (`val` shl 8) + (buffer[--pos] and 0xFF.toByte())
+    return `val`
+}
+
+class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -50,17 +51,25 @@ class MainActivity : AppCompatActivity(), RecordFragmentInterface {
 
     private var navState = 1
 
-    override fun togglePlayback(): Boolean {
-        if(mAudioClassifier.isPlaying()) {
-            mAudioClassifier.pause()
-        } else {
-            mAudioClassifier.play()
-        }
-        return mAudioClassifier.isPlaying()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val inputStream = this.resources.openRawResource(R.raw.test)
+        var buffer = ByteArray(12)
+        inputStream.read(buffer, 0, 12)
+        var header = ByteArray(4)
+        header[0] = 'R'.toByte()
+        header[1] = 'I'.toByte()
+        header[2] = 'F'.toByte()
+        header[3] = 'F'.toByte()
+
+        val hChunkId = getLE(header, 0, 4)
+        val hChunkId2 = getLE(buffer, 0, 4)
+        val chunkId: Long = 1179011410
+        val chunkEquals = hChunkId == chunkId
+
+        Log.d(LOG_TAG, "CHUNK_ID: $chunkId, $hChunkId, $chunkEquals, $hChunkId2")
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -141,6 +150,23 @@ class MainActivity : AppCompatActivity(), RecordFragmentInterface {
     }
 
     private fun onFab(view: View, navController: NavController) {
+        when (navState) {
+            1 -> {
+                navState = 2
+                navController.navigate(R.id.action_firstFragment_to_recordingFragment)
+            }
+            2 -> {
+                navState = 3
+                navController.navigate(R.id.action_recordingFragment_to_recordedFragment)
+            }
+            3 -> {
+                navState = 2
+                navController.navigate(R.id.action_recordedFragment_to_recordingFragment)
+            }
+        }
+    }
+
+    private fun onFab2(view: View, navController: NavController) {
 
         val isRecording = mAudioClassifier.isRecording()
         Log.d(LOG_TAG, "is recoding: $isRecording ${view.id} ${R.id.firstFragment}")
@@ -154,11 +180,34 @@ class MainActivity : AppCompatActivity(), RecordFragmentInterface {
             mAudioClassifier.stopRecording()
             mAudioClassifier.load()
             val stats = mAudioClassifier.getStats()
-            val action =
+//            val action =
         } else {
             val action = RecordedFragmentDirections.actionRecordedFragmentToRecordingFragment()
             navController.navigate(action)
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        recordTest(this)
+    }
+
+    private fun recordTest(context: Context) {
+        val fileName = "record9.wav"
+        val filePath = context.externalCacheDir?.path + "/$fileName"
+        val mAudioRecorder = AudioRecorder(context, fileName)
+        val mAudioClassifier = AudioClassifier2()
+
+        Log.d(LOG_TAG, "MFCC classification started, recording wav file for 1 seconds")
+//        mAudioRecorder.startRecording()
+
+        val handler = Handler()
+        handler.postDelayed(Runnable {
+            // Actions to do after 10 seconds
+//            mAudioRecorder.stopRecording()
+            val mfcc = mAudioClassifier.getMfcc(filePath)
+            Log.d(LOG_TAG, "MFCC classification finished")
+        }, 5000)
     }
 }

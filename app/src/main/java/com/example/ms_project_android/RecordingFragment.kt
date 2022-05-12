@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import java.io.File
 
+private const val LOG_TAG = "RecordingFragment"
+
 class RecordingFragment : Fragment() {
     private lateinit var mAudioRecorder: AudioRecorder
 
@@ -16,8 +18,7 @@ class RecordingFragment : Fragment() {
 
         val context = this.activity
         if(context != null) {
-            val fileName = context.cacheDir.path + "/record"
-            mAudioRecorder = AudioRecorder(context, File(fileName))
+            mAudioRecorder = AudioRecorder(context, "record7.wav")
             mAudioRecorder.startRecording()
         }
     }
@@ -32,8 +33,12 @@ class RecordingFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        if(mAudioRecorder != null) {
-            mAudioRecorder.stopRecording()
-        }
+        Log.d(LOG_TAG,"VIEW DESTROYED")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mAudioRecorder.stopRecording()
+        Log.d(LOG_TAG, "ON STOP")
     }
 }

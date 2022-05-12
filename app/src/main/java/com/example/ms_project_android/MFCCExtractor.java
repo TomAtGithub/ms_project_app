@@ -1,5 +1,9 @@
 package com.example.ms_project_android;
 
+//import com.jlibrosa.audio.JLibrosa;
+//import com.jlibrosa.audio.exception.FileFormatNotSupportedException;
+//import com.jlibrosa.audio.wavFile.WavFileException;
+
 import com.jlibrosa.audio.JLibrosa;
 import com.jlibrosa.audio.exception.FileFormatNotSupportedException;
 import com.jlibrosa.audio.wavFile.WavFileException;
@@ -20,7 +24,7 @@ public class MFCCExtractor {
 
         float[] audioFeatureValues = new float[0];
         try {
-            audioFeatureValues = this.jlibrosa.loadAndRead(file_path, -1, -1);
+            audioFeatureValues = this.jlibrosa.loadAndRead(file_path, 44100, 5);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (WavFileException e) {
