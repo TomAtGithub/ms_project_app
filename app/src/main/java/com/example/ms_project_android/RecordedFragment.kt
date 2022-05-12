@@ -65,27 +65,4 @@ class RecordedFragment : Fragment(), RecordFragmentInterface {
 
         infoView.text = stats.toString()
     }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RecordedFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(stats: RecordStats) =
-            RecordedFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable("stats", stats)
-                }
-            }
-    }
-
-    fun onClick(p0: View?) {
-        TODO("Not yet implemented")
-    }
 }

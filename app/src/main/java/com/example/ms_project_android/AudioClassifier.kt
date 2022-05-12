@@ -7,6 +7,7 @@ import android.media.MediaRecorder
 import android.os.Build
 import android.util.Log
 import java.io.File
+import java.io.FileWriter
 import java.io.IOException
 
 private const val LOG_TAG = "AudioClassifier"
@@ -14,6 +15,7 @@ private const val LOG_TAG = "AudioClassifier"
 class AudioClassifier(context: Context) {
 
     private lateinit var record: AudioRecord
+    private val basePath = context.cacheDir.path
     private var fileName = context.cacheDir.path + "/test"
     private var mRecord = File(fileName)
     private var mRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -86,6 +88,13 @@ class AudioClassifier(context: Context) {
     fun pause() {
         mPlayer.stop()
         isPlaying = false
+    }
+    fun classifyTest() {
+        val mfccExtractor = MFCCExtractor(39)
+        val meanMfcc = mfccExtractor.getMeanMFCC(fileName)
+        val fw = FileWriter("$basePath/meanMfcc.csv")
+        fw.write(meanMfcc.joinToString(","))
+        fw.close()
     }
 }
 

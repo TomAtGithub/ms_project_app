@@ -3,26 +3,38 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/firstFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="com.example.ms_project_android.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/recordingFragment"
+        android:name="com.example.ms_project_android.RecordingFragment"
+        android:label="fragment_recording"
+        tools:layout="@layout/fragment_recording" >
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_recordingFragment_to_recordedFragment"
+            app:destination="@id/recordedFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.ms_project_android.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
+        android:id="@+id/recordedFragment"
+        android:name="com.example.ms_project_android.RecordedFragment"
+        android:label="fragment_recorded"
+        tools:layout="@layout/fragment_recorded" >
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_recordedFragment_to_recordingFragment"
+            app:destination="@id/recordingFragment" />
+        <argument
+            android:name="recordStats"
+            app:argType="com.example.ms_project_android.RecordStats"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+    <fragment
+        android:id="@+id/firstFragment"
+        android:name="com.example.ms_project_android.FirstFragment"
+        android:label="fragment_first"
+        tools:layout="@layout/fragment_first" >
+        <action
+            android:id="@+id/action_firstFragment_to_recordingFragment"
+            app:destination="@id/recordingFragment" />
     </fragment>
 </navigation>
