@@ -228,10 +228,11 @@ class MainActivity : AppCompatActivity() {
 //        }
         val LOG_TAG_H = "$LOG_TAG:OPENSMILE"
         val cachePath = context.externalCacheDir?.path!!
-//        val configPath = cacheAsset("config/MFCC12_0_D_A.conf", cachePath)
-        val configPath = cacheAsset("config/test.config", cachePath)
+        val configPath = cacheAsset("config/MFCC12_0_D_A_2.conf", cachePath)
+//        val configPath = cacheAsset("config/test.config", cachePath)
+//        val configPath = cacheAsset("config/mfcc.config", cachePath)
         val wavPath = cacheAsset("audio/test.wav", cachePath)
-        val csvPath = "$cachePath/audio/test.csv"
+        val csvPath = "$cachePath/audio/mfcc.csv"
         val params = hashMapOf<String, String?>("-I" to wavPath, "-O" to csvPath)
         val loglevel = 3
         val debug = 1
