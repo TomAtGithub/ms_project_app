@@ -7,6 +7,7 @@ package com.example.ms_project_android
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.AssetManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -20,7 +21,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import com.audeering.opensmile.OpenSmileAdapter
 import com.example.ms_project_android.databinding.ActivityMainBinding
+import java.io.File
+import java.io.FileOutputStream
+import java.io.InputStreamReader
 import kotlin.experimental.and
 
 private const val LOG_TAG = "AudioRecordTest"
@@ -46,7 +51,8 @@ class MainActivity : AppCompatActivity() {
     private var permissionToRecordAccepted = false
     private var permissions: Array<String> = arrayOf(
         Manifest.permission.RECORD_AUDIO,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
     private var navState = 1
@@ -190,10 +196,104 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        recordTest(this)
+//        recordTest(this)
+        opensmile(this)
+    }
+
+    /**
+     * copies a file to a given destination
+     * @param filename the file to be copied
+     * @param dst destination directory (default: cacheDir)
+     */
+    private fun cacheAsset(filename: String, dst: String = cacheDir.absolutePath): String {
+        val pathname = "$dst/$filename"
+        val outfile = File(pathname).apply { parentFile?.mkdirs() }
+        assets.open(filename).use { inputStream ->
+            FileOutputStream(outfile).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        Log.d(LOG_TAG, "copy $pathname to $outfile")
+        return outfile.path
+    }
+
+    private fun opensmile(context: Context) {
+//        val osConfig = context.assets.open("config/MFCC12_0_D_A.conf")
+//        val osConfig = context.resources.assets.open("config/MFCC12_0_D_A.conf")
+//        val config = osConfig.read()
+
+//        val dir = File(cacheDir.path)
+//        for(file in dir.listFiles()) {
+//            Log.d(LOG_TAG, "cache dir ${file.absolutePath}")
+//        }
+        val LOG_TAG_H = "$LOG_TAG:OPENSMILE"
+        val cachePath = context.externalCacheDir?.path!!
+//        val configPath = cacheAsset("config/MFCC12_0_D_A.conf", cachePath)
+        val configPath = cacheAsset("config/test.config", cachePath)
+        val wavPath = cacheAsset("audio/test.wav", cachePath)
+        val csvPath = "$cachePath/audio/test.csv"
+        val params = hashMapOf<String, String?>("-I" to wavPath, "-O" to csvPath)
+        val loglevel = 3
+        val debug = 1
+        val consoleOutput = 1
+
+        val ose = OpenSmileAdapter()
+        var state = ose.smile_initialize(configPath, HashMap(params), loglevel, debug, consoleOutput)
+        Log.d(LOG_TAG_H, "state br $state")
+        state = ose.smile_run()
+        Log.d(LOG_TAG_H, "state ar $state")
+//        val configPathName = cacheDir.path + "/config"
+//        val inputStream = context.resources.openRawResource(R.raw.opensmile)
+//        val isr = InputStreamReader(inputStream)
+//        val mainConfig = isr.readText()
+//        val filePath = context.getExternalFilesDir("records")?.path + "/test.wav"
+////        val params = mapOf("-0" to filePath)
+//        val params = hashMapOf<String, String?>("-0" to filePath)
+//        val loglevel = 2
+//        val debug = 0
+//        val consoleOutput = 0
+////        Log.d(LOG_TAG, "config: ${config.toString()}")
+//
+////        val config2 = context.resources.openRawResource(config)
+////        val config3 = config2.read()
+////        Log.d(LOG_TAG, "config: ${config2.toString()}")
+////        Log.d(LOG_TAG, "config: ${config3.toString()}")
+//        val ose = OpenSmileAdapter()
+//        var state = ose.smile_initialize(mainConfig, params, loglevel, debug, consoleOutput)
+
     }
 
     private fun recordTest(context: Context) {
+        Log.d(LOG_TAG, "RT: record test started")
+
+//        val filePath = context.getExternalFilesDir("records")?.path + "/test.wav"
+//        val file = File(filePath)
+        val dirRecords = context.getExternalFilesDir("records")
+        val files = dirRecords?.listFiles()
+        if(files != null) {
+            for (record in files) {
+                Log.d(LOG_TAG, "RT: File: ${record.path}")
+                val mfccExtractor = MFCCExtractor(40)
+                val mfcc = mfccExtractor.getMeanMFCC(record.path)
+                Log.d(LOG_TAG, "RT: MFCC classification finished")
+            }
+        } else {
+            Log.d(LOG_TAG, "RT: files not found")
+        }
+
+//        Log.d(LOG_TAG, "RT: filepath: $filePath")
+//        if(file.exists()) {
+//            Log.d(LOG_TAG, "RT: file exists")
+//            val mfccExtractor = MFCCExtractor(40)
+//            val mfcc = mfccExtractor.getMeanMFCC(filePath)
+//            Log.d(LOG_TAG, "RT: MFCC classification finished")
+//        }
+//        else {
+//            Log.d(LOG_TAG, "RT: file not found")
+//        }
+    }
+
+    private fun recordTest2(context: Context) {
         val fileName = "record10.wav"
         val filePath = context.externalCacheDir?.path + "/$fileName"
         val mAudioRecorder = AudioRecorder(context, filePath)

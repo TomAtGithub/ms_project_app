@@ -24,7 +24,7 @@ public class MFCCExtractor {
 
         float[] audioFeatureValues = new float[0];
         try {
-            audioFeatureValues = this.jlibrosa.loadAndRead(file_path, 44100, 5);
+            audioFeatureValues = this.jlibrosa.loadAndRead(file_path, 16000, 3);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (WavFileException e) {

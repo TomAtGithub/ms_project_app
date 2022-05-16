@@ -2,8 +2,10 @@
 
 - [x] create git repo
 - [x] Record Audio
-- [ ] Save audio
+- [x] Save audio
 - [x] Play Audio
+- [x] Read file from external storage
+- [ ] Run openSMILE
 - [ ] Create mfcc
 - [ ] Load model
 - [ ] Classify mfcc
