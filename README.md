@@ -17,6 +17,16 @@
 - [ ] Evaluate dialog
 - [ ] share evaluation / send via mail
 
+# What is working
+
+- 40mffc via openSMILE --> require 40mfcc model ideally trained by openSMILE (we have 40mfcc model)
+- Rec Wav Audio
+
+Next Steps
+- write final Paper
+- create Presentation
+- see TODO
+
 # Generate openSMILE config
 
 openSMILE configs can be generated via SMILExtract.

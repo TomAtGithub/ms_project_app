@@ -253,15 +253,17 @@ class MainActivity : AppCompatActivity() {
         val configBufferFrameModePath = cacheAsset("config/FrameModeFunctionalsLive.conf.inc", cachePath)
 //        val configPath = cacheAsset("config/test.config", cachePath)
 //        val configPath = cacheAsset("config/mfcc.config", cachePath)
-        val wavPath = cacheAsset("audio/test.wav", cachePath)
+//        val wavPath = cacheAsset("audio/test.wav", cachePath)
+        val wavPath = cacheAsset("audio/happy_test.wav", cachePath)
         val csvPath = "$cachePath/audio/mfcc.csv"
-        val csvPathEge = "$cachePath/audio/egemaps.csv"
+        val csvPathEge = "$cachePath/audio/egemaps3.csv"
         val params = hashMapOf<String, String?>(
             "-I" to wavPath,
-            "-O" to csvPath,
+//            "-O" to csvPath,
             "-bufferModeConf" to configBufferPath,
             "-frameModeFunctionalsConf" to configBufferFrameModePath,
-            "-csvoutput" to csvPathEge
+            "-csvoutput" to csvPathEge,
+            // "-end" to "10"
             //"-bufferModeRbConf" to configBufferRbPath
         )
         val loglevel = 3
