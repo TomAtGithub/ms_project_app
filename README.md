@@ -15,7 +15,7 @@
 - [ ] Show label in GUI
 - [ ] Load, classify and save results.csv of example audio on start option
 - [ ] Evaluate dialog
-- [ ] share evaluation / send via mail
+- [ ] share evaluation / send via mail / write result to view and then they have to screenshot it
 
 # What is working
 
