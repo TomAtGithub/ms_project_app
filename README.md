@@ -8,6 +8,8 @@
 - [x] Run openSMILE
 - [x] Create mfcc
 - [ ] Try to make openSMILE mfcc like librosa mfcc
+- [ ] Create mfcc with 88 chars
+- [ ] Read CSV
 - [ ] Load model
 - [ ] Classify mfcc
 - [ ] Show label in GUI

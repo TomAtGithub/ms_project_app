@@ -217,6 +217,22 @@ class MainActivity : AppCompatActivity() {
         return outfile.path
     }
 
+    private fun cacheAssetDir(dir: String): String {
+        val paths = assets.list(dir)
+
+        Log.d(LOG_TAG, "cacheAssetsDir path: $dir, ${paths?.size}")
+
+        if(paths != null) {
+            for (path in paths) {
+                Log.d(LOG_TAG, "cacheAssetsDir path: $path")
+            }
+        } else {
+            Log.d(LOG_TAG, "cacheAssetsDir path: null")
+        }
+
+        return ""
+    }
+
     private fun opensmile(context: Context) {
 //        val osConfig = context.assets.open("config/MFCC12_0_D_A.conf")
 //        val osConfig = context.resources.assets.open("config/MFCC12_0_D_A.conf")
@@ -228,15 +244,31 @@ class MainActivity : AppCompatActivity() {
 //        }
         val LOG_TAG_H = "$LOG_TAG:OPENSMILE"
         val cachePath = context.externalCacheDir?.path!!
-        val configPath = cacheAsset("config/MFCC12_0_D_A_2.conf", cachePath)
+//        val cachePath = context.cacheDir?.path!!
+//        val configPath = cacheAsset("config/MFCC12_0_D_A_2.conf", cachePath)
+        val configPath = cacheAsset("config/eGeMAPS_v02_Complete_v2.conf", cachePath)
+        val configBufferPath = cacheAsset("config/BufferModeLive.conf.inc", cachePath)
+        val configBufferRbPath = cacheAsset("config/BufferModeRb.conf.inc", cachePath)
+        val configBufferRbLgPath = cacheAsset("config/BufferModeRbLag.conf.inc", cachePath)
+        val configBufferFrameModePath = cacheAsset("config/FrameModeFunctionalsLive.conf.inc", cachePath)
 //        val configPath = cacheAsset("config/test.config", cachePath)
 //        val configPath = cacheAsset("config/mfcc.config", cachePath)
         val wavPath = cacheAsset("audio/test.wav", cachePath)
         val csvPath = "$cachePath/audio/mfcc.csv"
-        val params = hashMapOf<String, String?>("-I" to wavPath, "-O" to csvPath)
+        val csvPathEge = "$cachePath/audio/egemaps.csv"
+        val params = hashMapOf<String, String?>(
+            "-I" to wavPath,
+            "-O" to csvPath,
+            "-bufferModeConf" to configBufferPath,
+            "-frameModeFunctionalsConf" to configBufferFrameModePath,
+            "-csvoutput" to csvPathEge
+            //"-bufferModeRbConf" to configBufferRbPath
+        )
         val loglevel = 3
         val debug = 1
         val consoleOutput = 1
+
+        //cacheAssetDir("$cachePath/config/")
 
         val ose = OpenSmileAdapter()
         var state = ose.smile_initialize(configPath, HashMap(params), loglevel, debug, consoleOutput)
