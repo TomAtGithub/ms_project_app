@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
 //        val configPath = cacheAsset("config/mfcc.config", cachePath)
         val wavPath = cacheAsset("audio/test.wav", cachePath)
 //        val wavPath = cacheAsset("audio/happy_test.wav", cachePath)
-        val csvPath = "$cachePath/audio/mfcc_2.func.csv"
+        val csvPath = "$cachePath/audio/mfcc_3.func.csv"
         val csvPathEge = "$cachePath/audio/egemaps3.csv"
         val params = hashMapOf<String, String?>(
             "-I" to wavPath,
