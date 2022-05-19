@@ -22,9 +22,15 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.audeering.opensmile.OpenSmileAdapter
 import com.example.ms_project_android.databinding.ActivityMainBinding
+import com.github.doyaaaaaken.kotlincsv.dsl.context.InsufficientFieldsRowBehaviour
+import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
+import com.opencsv.bean.CsvDate
 import java.io.File
 import java.io.FileOutputStream
+import java.io.FileReader
 import kotlin.experimental.and
+
+
 
 private const val LOG_TAG = "AudioRecordTest"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
@@ -195,7 +201,8 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 //        recordTest(this)
-        opensmile(this)
+//        opensmile(this)
+        readerTest(this)
     }
 
     /**
@@ -232,68 +239,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun opensmile(context: Context) {
-//        val osConfig = context.assets.open("config/MFCC12_0_D_A.conf")
-//        val osConfig = context.resources.assets.open("config/MFCC12_0_D_A.conf")
-//        val config = osConfig.read()
-
-//        val dir = File(cacheDir.path)
-//        for(file in dir.listFiles()) {
-//            Log.d(LOG_TAG, "cache dir ${file.absolutePath}")
-//        }
-        val LOG_TAG_H = "$LOG_TAG:OPENSMILE"
         val cachePath = context.externalCacheDir?.path!!
-//        val cachePath = context.cacheDir?.path!!
         val configPath = cacheAsset("config/MFCC12_0_D_A.func.conf", cachePath)
-//        val configPath = cacheAsset("config/eGeMAPS_v02_Complete_v2.conf", cachePath)
-        val configBufferPath = cacheAsset("config/BufferModeLive.conf.inc", cachePath)
-        val configBufferRbPath = cacheAsset("config/BufferModeRb.conf.inc", cachePath)
-        val configBufferRbLgPath = cacheAsset("config/BufferModeRbLag.conf.inc", cachePath)
-        val configBufferFrameModePath = cacheAsset("config/FrameModeFunctionalsLive.conf.inc", cachePath)
-//        val configPath = cacheAsset("config/test.config", cachePath)
-//        val configPath = cacheAsset("config/mfcc.config", cachePath)
         val wavPath = cacheAsset("audio/test.wav", cachePath)
-//        val wavPath = cacheAsset("audio/happy_test.wav", cachePath)
-        val csvPath = "$cachePath/audio/mfcc_3.func.csv"
-        val csvPathEge = "$cachePath/audio/egemaps3.csv"
+        val csvPath = "$cachePath/audio/mfcc.func.csv"
         val params = hashMapOf<String, String?>(
             "-I" to wavPath,
             "-O" to csvPath,
-//            "-bufferModeConf" to configBufferPath,
-//            "-frameModeFunctionalsConf" to configBufferFrameModePath,
-//            "-csvoutput" to csvPathEge,
-            // "-end" to "10"
-            //"-bufferModeRbConf" to configBufferRbPath
         )
         val loglevel = 3
         val debug = 1
         val consoleOutput = 1
 
-        //cacheAssetDir("$cachePath/config/")
-
         val ose = OpenSmileAdapter()
         var state = ose.smile_initialize(configPath, HashMap(params), loglevel, debug, consoleOutput)
-        Log.d(LOG_TAG_H, "state br $state")
+        Log.d(LOG_TAG, "state br $state")
         state = ose.smile_run()
-        Log.d(LOG_TAG_H, "state ar $state")
-//        val configPathName = cacheDir.path + "/config"
-//        val inputStream = context.resources.openRawResource(R.raw.opensmile)
-//        val isr = InputStreamReader(inputStream)
-//        val mainConfig = isr.readText()
-//        val filePath = context.getExternalFilesDir("records")?.path + "/test.wav"
-////        val params = mapOf("-0" to filePath)
-//        val params = hashMapOf<String, String?>("-0" to filePath)
-//        val loglevel = 2
-//        val debug = 0
-//        val consoleOutput = 0
-////        Log.d(LOG_TAG, "config: ${config.toString()}")
-//
-////        val config2 = context.resources.openRawResource(config)
-////        val config3 = config2.read()
-////        Log.d(LOG_TAG, "config: ${config2.toString()}")
-////        Log.d(LOG_TAG, "config: ${config3.toString()}")
-//        val ose = OpenSmileAdapter()
-//        var state = ose.smile_initialize(mainConfig, params, loglevel, debug, consoleOutput)
-
+        Log.d(LOG_TAG, "state ar $state")
     }
 
     private fun recordTest(context: Context) {
@@ -343,5 +305,11 @@ class MainActivity : AppCompatActivity() {
             val mfcc = mfccExtractor.getMeanMFCC(filePath)
             Log.d(LOG_TAG, "MFCC classification finished")
         }, duration)
+    }
+
+    private fun readerTest(context: Context) {
+        val cachePath = context.externalCacheDir?.path!!
+        val reader = CSVHandler()
+        val features = reader.read("$cachePath/audio/mfcc.func.6.csv")
     }
 }
