@@ -7,7 +7,6 @@ package com.example.ms_project_android
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.AssetManager
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -25,7 +24,6 @@ import com.audeering.opensmile.OpenSmileAdapter
 import com.example.ms_project_android.databinding.ActivityMainBinding
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStreamReader
 import kotlin.experimental.and
 
 private const val LOG_TAG = "AudioRecordTest"
@@ -255,7 +253,7 @@ class MainActivity : AppCompatActivity() {
 //        val configPath = cacheAsset("config/mfcc.config", cachePath)
         val wavPath = cacheAsset("audio/test.wav", cachePath)
 //        val wavPath = cacheAsset("audio/happy_test.wav", cachePath)
-        val csvPath = "$cachePath/audio/mfcc.func.2.csv"
+        val csvPath = "$cachePath/audio/mfcc_2.func.csv"
         val csvPathEge = "$cachePath/audio/egemaps3.csv"
         val params = hashMapOf<String, String?>(
             "-I" to wavPath,
