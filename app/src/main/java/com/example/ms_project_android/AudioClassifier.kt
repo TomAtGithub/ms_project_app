@@ -19,7 +19,7 @@ import java.nio.channels.FileChannel
 private const val LOG_TAG = "AudioClassifier"
 //private const val MODEL_FILENAME = "Emotion_Voice_Detection_Base.tflite"
 //private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile.tflite"
-private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_MFCC.tflite"
+private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_MFCC_2.tflite"
 val OUTPUT_LABEL_MAP = hashMapOf<Int, String>(
     0 to "neutral",
     1 to "happiness",
@@ -41,22 +41,20 @@ class AudioClassifier(context: Context) {
         if(interpreter != null) {
 
             // model uses only the first 288 columns (mfcc features only)
-            val featureVector = FloatArray(684)
+//            val featureVector = FloatArray(684)
             val featureSet = features.values.toFloatArray()
-//            val featureSubset = featureSet.copyOfRange(0, 228)
-            System.arraycopy(featureSet, 0, featureVector, 0, featureSet.size)
+            val featureSubset = featureSet.copyOfRange(0, 228)
+//            System.arraycopy(featureSet, 0, featureVector, 0, featureSet.size)
 //            val input = arrayOf(FloatArray(88))
             val input = arrayOf(
-                arrayOf(featureVector)
+                arrayOf(featureSubset)
             )
 
-            Log.d(LOG_TAG, "input: ${input.size}, ${input[0].size}, ${input[0][0].size}")
+            Log.d(LOG_TAG, "input: ${input[0].size}, ${input[0][0].size}")
 
             val outputMap = hashMapOf<Int, Any>(
                 0 to arrayOf(FloatArray(5))
             )
-
-            Log.d(LOG_TAG, "input ${input.size} ${input[0].size} ${input[0][0]}")
 
             interpreter.runForMultipleInputsOutputs(input, outputMap)
 
@@ -82,6 +80,8 @@ class AudioClassifier(context: Context) {
         val best = probabilities.maxOrNull()!!
         val bestIndex = probabilities.indexOfFirst {it == best}
         val bestLabel = OUTPUT_LABEL_MAP[bestIndex]!!
+
+        Log.d(LOG_TAG, "output results ${resultMap}")
 
         return ClassificationResults(label = bestLabel, probability = best, resultMap)
     }
