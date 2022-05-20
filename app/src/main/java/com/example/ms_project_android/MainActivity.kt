@@ -60,62 +60,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val inputStream = this.resources.openRawResource(R.raw.test)
-        var buffer = ByteArray(12)
-        inputStream.read(buffer, 0, 12)
-        var header = ByteArray(4)
-        header[0] = 'R'.toByte()
-        header[1] = 'I'.toByte()
-        header[2] = 'F'.toByte()
-        header[3] = 'F'.toByte()
-
-        val hChunkId = getLE(header, 0, 4)
-        val hChunkId2 = getLE(buffer, 0, 4)
-        val chunkId: Long = 1179011410
-        val chunkEquals = hChunkId == chunkId
-
-        Log.d(LOG_TAG, "CHUNK_ID: $chunkId, $hChunkId, $chunkEquals, $hChunkId2")
-
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-
-//        val navController = findNavController(R.id.frag_nav_controller)
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)!!
         val navController = navHostFragment.findNavController()
 //        appBarConfiguration = AppBarConfiguration(navController.graph)
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
-
-        mAudioClassifier = AudioClassifierOld(this)
-
-//        var frag: Fragment = FirstFragment()
-//        supportFragmentManager.beginTransaction().add(R.id.container, frag).commit()
-
-//        binding.fab.setOnClickListener { view ->
-//            val isRecording = mAudioClassifier.isRecording()
-//            val nextFrag = if(isRecording) {
-//                mAudioClassifier.stopRecording()
-//                mAudioClassifier.load()
-//                RecordedFragment.newInstance(mAudioClassifier.getStats())
-//            } else {
-//                mAudioClassifier.startRecording()
-//                RecordingFragment()
-//            }
-//
-//            supportFragmentManager.beginTransaction().remove(frag).add(R.id.container,
-//                nextFrag
-//            ).commit()
-//
-//            frag = nextFrag
-//
-//            Snackbar.make(view, "isRecording: $isRecording", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//        }
-        
         binding.fab.setOnClickListener { view -> this.onFab(view, navController) }
     }
 
@@ -172,143 +126,62 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun onFab2(view: View, navController: NavController) {
-
-        val isRecording = mAudioClassifier.isRecording()
-        Log.d(LOG_TAG, "is recoding: $isRecording ${view.id} ${R.id.firstFragment}")
-
-        if(navState == 1) {
-            navState = 2
-            navController.navigate(R.id.action_firstFragment_to_recordingFragment)
-            mAudioClassifier.startRecording()
-        }
-        else if(mAudioClassifier.isRecording()) {
-            mAudioClassifier.stopRecording()
-            mAudioClassifier.load()
-            val stats = mAudioClassifier.getStats()
-//            val action =
-        } else {
-            val action = RecordedFragmentDirections.actionRecordedFragmentToRecordingFragment()
-            navController.navigate(action)
-        }
-
-    }
-
     override fun onStart() {
         super.onStart()
-//        recordTest(this)
-//        opensmile(this)
-        readerTest(this)
+        testRun(this)
     }
 
-    /**
-     * copies a file to a given destination
-     * @param filename the file to be copied
-     * @param dst destination directory (default: cacheDir)
-     */
-    private fun cacheAsset(filename: String, dst: String = cacheDir.absolutePath): String {
-        val pathname = "$dst/$filename"
-        val outfile = File(pathname).apply { parentFile?.mkdirs() }
-        assets.open(filename).use { inputStream ->
-            FileOutputStream(outfile).use { outputStream ->
-                inputStream.copyTo(outputStream)
-            }
-        }
-        Log.d(LOG_TAG, "copy $pathname to $outfile")
-        return outfile.path
-    }
+    private fun testRun(
+        context: Context,
+        recordAudio: Boolean = true,
+        createMfcc: Boolean = true,
+        classify: Boolean = true)
+    {
+        val logTag = "TEST_RUN"
+        var audioPath = ""
 
-    private fun cacheAssetDir(dir: String): String {
-        val paths = assets.list(dir)
+        if(recordAudio) {
+            audioPath = "${context.externalCacheDir?.path!!}/audio/record.wav"
+            val mAudioRecorder = AudioRecorder(context, audioPath)
+            val duration: Long = 5000
+            val handler = Handler()
 
-        Log.d(LOG_TAG, "cacheAssetsDir path: $dir, ${paths?.size}")
+            mAudioRecorder.startRecording()
+            Log.d(logTag, "recording started for $duration ms")
+            handler.postDelayed(Runnable {
+                mAudioRecorder.stopRecording()
+                Log.d(logTag, "recording finished")
+                testRun(context, recordAudio = false)
+            }, duration)
 
-        if(paths != null) {
-            for (path in paths) {
-                Log.d(LOG_TAG, "cacheAssetsDir path: $path")
-            }
-        } else {
-            Log.d(LOG_TAG, "cacheAssetsDir path: null")
+            return
         }
 
-        return ""
-    }
+        audioPath = Utils.getAsset(context, "audio/test.wav").absolutePath
 
-    private fun opensmile(context: Context) {
-        val cachePath = context.externalCacheDir?.path!!
-        val configPath = cacheAsset("config/MFCC12_0_D_A.func.conf", cachePath)
-        val wavPath = cacheAsset("audio/test.wav", cachePath)
-        val csvPath = "$cachePath/audio/mfcc.func.csv"
-        val params = hashMapOf<String, String?>(
-            "-I" to wavPath,
-            "-O" to csvPath,
-        )
-        val loglevel = 3
-        val debug = 1
-        val consoleOutput = 1
-
-        val ose = OpenSmileAdapter()
-        var state = ose.smile_initialize(configPath, HashMap(params), loglevel, debug, consoleOutput)
-        Log.d(LOG_TAG, "state br $state")
-        state = ose.smile_run()
-        Log.d(LOG_TAG, "state ar $state")
-    }
-
-    private fun recordTest(context: Context) {
-        Log.d(LOG_TAG, "RT: record test started")
-
-//        val filePath = context.getExternalFilesDir("records")?.path + "/test.wav"
-//        val file = File(filePath)
-        val dirRecords = context.getExternalFilesDir("records")
-        val files = dirRecords?.listFiles()
-        if(files != null) {
-            for (record in files) {
-                Log.d(LOG_TAG, "RT: File: ${record.path}")
-                val mfccExtractor = MFCCExtractor(40)
-                val mfcc = mfccExtractor.getMeanMFCC(record.path)
-                Log.d(LOG_TAG, "RT: MFCC classification finished")
+        val featureExtractor = FeatureExtractor(context)
+        if(createMfcc) {
+            val ok = featureExtractor.run(audioPath)
+            val hrState = if(ok) {
+                "SUCCESS"
+            } else {
+                "FAILED"
             }
-        } else {
-            Log.d(LOG_TAG, "RT: files not found")
+
+            Log.d(logTag, "feature extraction $hrState")
         }
+        val features = featureExtractor.getFeatures()
+        Log.d(logTag, "features loaded ${features.values.size}")
 
-//        Log.d(LOG_TAG, "RT: filepath: $filePath")
-//        if(file.exists()) {
-//            Log.d(LOG_TAG, "RT: file exists")
-//            val mfccExtractor = MFCCExtractor(40)
-//            val mfcc = mfccExtractor.getMeanMFCC(filePath)
-//            Log.d(LOG_TAG, "RT: MFCC classification finished")
-//        }
-//        else {
-//            Log.d(LOG_TAG, "RT: file not found")
-//        }
-    }
-
-    private fun recordTest2(context: Context) {
-        val fileName = "record10.wav"
-        val filePath = context.externalCacheDir?.path + "/$fileName"
-        val mAudioRecorder = AudioRecorder(context, filePath)
-        val mfccExtractor = MFCCExtractor(40)
-        val duration: Long = 5000
-
-        Log.d(LOG_TAG, "MFCC classification started, recording wav file for $duration ms")
-        mAudioRecorder.startRecording()
-
-        val handler = Handler()
-        handler.postDelayed(Runnable {
-            // Actions to do after 10 seconds
-            mAudioRecorder.stopRecording()
-            val mfcc = mfccExtractor.getMeanMFCC(filePath)
-            Log.d(LOG_TAG, "MFCC classification finished")
-        }, duration)
-    }
-
-    private fun readerTest(context: Context) {
-        val cachePath = context.externalCacheDir?.path!!
-        val reader = CSVHandler()
-        val features = reader.read("$cachePath/audio/mfcc.func.6.csv")
-        Log.d(LOG_TAG, "feature size ${features.size}")
-        val audioClassifier = AudioClassifier(context)
-        audioClassifier.classify(features)
+        if(classify) {
+            val audioClassifier = AudioClassifier(context)
+            val results = audioClassifier.classify(features)
+            if(results != null) {
+                Log.d(logTag, "classification: audio classified as ${results.label} with probability ${results.probability}")
+                Log.d(logTag, "classification: probabilities ${results.probabilities}")
+            } else {
+                Log.d(logTag, "classification: FAILED")
+            }
+        }
     }
 }
