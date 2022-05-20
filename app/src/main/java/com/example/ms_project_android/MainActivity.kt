@@ -22,12 +22,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.audeering.opensmile.OpenSmileAdapter
 import com.example.ms_project_android.databinding.ActivityMainBinding
-import com.github.doyaaaaaken.kotlincsv.dsl.context.InsufficientFieldsRowBehaviour
-import com.github.doyaaaaaken.kotlincsv.dsl.csvReader
-import com.opencsv.bean.CsvDate
 import java.io.File
 import java.io.FileOutputStream
-import java.io.FileReader
 import kotlin.experimental.and
 
 
@@ -49,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mAudioClassifier: AudioClassifier
+    private lateinit var mAudioClassifier: AudioClassifierOld
 
    // Requesting permission to RECORD_AUDIO
     private var permissionToRecordAccepted = false
@@ -94,7 +90,7 @@ class MainActivity : AppCompatActivity() {
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 
-        mAudioClassifier = AudioClassifier(this)
+        mAudioClassifier = AudioClassifierOld(this)
 
 //        var frag: Fragment = FirstFragment()
 //        supportFragmentManager.beginTransaction().add(R.id.container, frag).commit()
@@ -311,5 +307,8 @@ class MainActivity : AppCompatActivity() {
         val cachePath = context.externalCacheDir?.path!!
         val reader = CSVHandler()
         val features = reader.read("$cachePath/audio/mfcc.func.6.csv")
+        Log.d(LOG_TAG, "feature size ${features.size}")
+        val audioClassifier = AudioClassifier(context)
+        audioClassifier.classify(features)
     }
 }
