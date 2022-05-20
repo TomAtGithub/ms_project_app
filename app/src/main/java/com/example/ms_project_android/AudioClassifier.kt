@@ -22,13 +22,10 @@ private const val LOG_TAG = "AudioClassifier"
 private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_MFCC.tflite"
 val OUTPUT_LABEL_MAP = hashMapOf<Int, String>(
     0 to "neutral",
-    1 to "calm",
-    2 to "happy",
-    3 to "sad",
-    4 to "angry",
-    5 to "fearful",
-    6 to "disgust",
-    7 to "surprised"
+    1 to "happiness",
+    2 to "sadness",
+    3 to "anger",
+    4 to "fear"
 )
 
 data class ClassificationResults (

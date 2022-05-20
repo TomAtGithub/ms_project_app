@@ -15,16 +15,6 @@ import kotlin.math.log
 
 private const val LOG_TAG = "RecordedFragment"
 
-private fun getLE(buffer: ByteArray, pos: Int, numBytes: Int): Long {
-    var pos = pos
-    var numBytes = numBytes
-    numBytes--
-    pos += numBytes
-    var `val`: Long = (buffer[pos] and 0xFF.toByte()).toLong()
-    for (b in 0 until numBytes) `val` = (`val` shl 8) + (buffer[--pos] and 0xFF.toByte())
-    return `val`
-}
-
 class RecordedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,23 +53,24 @@ class RecordedFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         Log.d(LOG_TAG, "ON STARTED")
-        val audioClassifier = AudioClassifier2()
-        val context = this.activity
-        if(context != null) {
-            val filePath = context.externalCacheDir?.path + "/record7.wav"
-//            val filePath = context.filesDir?.path + "/record5.wav"
-//            val file = File(filePath)
-//            val buffer = file.readBytes()
-//            val chunkId = getLE(buffer, 0, 4)
-//            val origChunkId : Long = 1179011410
-//            val isEq = chunkId == origChunkId
-//            Log.d(LOG_TAG, "AudioFile: ${file.name}, ${file.extension}, ${file.exists()}, ${file.length()}, $chunkId $origChunkId $isEq")
-            val mfcc = audioClassifier.getMfcc(filePath)
 
-//            Log.d(LOG_TAG, "mfcc ${mfcc?.get(0)}")
-//            infoView.text = mfcc.toString()
-        } else {
-//            infoView.text = "Error"
+        val context = this.activity
+        var infoText = "ERROR"
+        if(context != null) {
+            val infoTextView = context.findViewById<TextView>(R.id.textViewInfo)
+            val featureExtractor = FeatureExtractor(context)
+            val ok = featureExtractor.run(Config.getRecordPath(context))
+
+            if(ok) {
+                val features = featureExtractor.getFeatures()
+                val audioClassifier = AudioClassifier(context)
+                val results = audioClassifier.classify(features)
+
+                if(results != null) {
+                    infoText = "Label: ${results.label}, Probability: ${results.probability}"
+                }
+            }
+            infoTextView.text = infoText
         }
     }
 }

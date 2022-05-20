@@ -12,7 +12,7 @@ class CSVHandler {
      * because the readers I tested ("opencsv", "kotlin-csv") could not handle that.
      *
      */
-    fun read(path: String): HashMap<String, Float> {
+    fun read(path: String, to: Int = 288): HashMap<String, Float> {
         val fileReader = FileReader(path)
         val csvData = fileReader.readText()
         val rows = csvData.split("\n")
@@ -22,6 +22,9 @@ class CSVHandler {
         val dataMap = hashMapOf<String, Float>()
 
         for(index in values.indices) {
+            if(index >= to) {
+                break
+            }
             val name = headers[index]
             val value = values[index]
 

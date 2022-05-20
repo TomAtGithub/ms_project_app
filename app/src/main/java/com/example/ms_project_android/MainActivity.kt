@@ -116,21 +116,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        testRun(this)
+//        testRun(this)
+//        val value = java.lang.Long.parseLong("-4.945681e1", 16)
+//        Log.d(LOG_TAG, "TEST ${value.toFloat()}")
     }
 
     private fun testRun(
         context: Context,
         recordAudio: Boolean = false,
-        createMfcc: Boolean = true,
+        createMfcc: Boolean = false,
         classify: Boolean = true)
     {
         val logTag = "TEST_RUN"
-        var audioPath = ""
 
         if(recordAudio) {
-            audioPath = "${context.externalCacheDir?.path!!}/audio/record.wav"
-            val mAudioRecorder = AudioRecorder(context, audioPath)
+            val audioPath = Config.getRecordPath(context)
+            val mAudioRecorder = AudioRecorder(audioPath)
             val duration: Long = 5000
             val handler = Handler()
 
@@ -145,10 +146,11 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        audioPath = Utils.getAsset(context, "audio/test.wav").absolutePath
+
 
         val featureExtractor = FeatureExtractor(context)
         if(createMfcc) {
+            val audioPath = Utils.getAsset(context, "audio/test.wav").absolutePath
             val ok = featureExtractor.run(audioPath)
             val hrState = if(ok) {
                 "SUCCESS"

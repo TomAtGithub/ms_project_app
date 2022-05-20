@@ -18,7 +18,7 @@ class RecordingFragment : Fragment() {
 
         val context = this.activity
         if(context != null) {
-            mAudioRecorder = AudioRecorder(context, "record7.wav")
+            mAudioRecorder = AudioRecorder(Config.getRecordPath(context))
             mAudioRecorder.startRecording()
         }
     }
