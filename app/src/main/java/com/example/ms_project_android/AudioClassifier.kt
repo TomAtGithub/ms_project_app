@@ -18,7 +18,8 @@ import java.nio.channels.FileChannel
 
 private const val LOG_TAG = "AudioClassifier"
 //private const val MODEL_FILENAME = "Emotion_Voice_Detection_Base.tflite"
-private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile.tflite"
+//private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile.tflite"
+private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_MFCC.tflite"
 val OUTPUT_LABEL_MAP = hashMapOf<Int, String>(
     0 to "neutral",
     1 to "calm",
@@ -41,9 +42,18 @@ class AudioClassifier(context: Context) {
 
     fun classify(features: HashMap<String, Float>): ClassificationResults? {
         if(interpreter != null) {
-            val input = arrayOf(FloatArray(88))
 
-            Log.d(LOG_TAG, "input: ${input.size}, ${input[0].size}")
+            // model uses only the first 288 columns (mfcc features only)
+            val featureVector = FloatArray(684)
+            val featureSet = features.values.toFloatArray()
+//            val featureSubset = featureSet.copyOfRange(0, 228)
+            System.arraycopy(featureSet, 0, featureVector, 0, featureSet.size)
+//            val input = arrayOf(FloatArray(88))
+            val input = arrayOf(
+                arrayOf(featureVector)
+            )
+
+            Log.d(LOG_TAG, "input: ${input.size}, ${input[0].size}, ${input[0][0].size}")
 
             val outputMap = hashMapOf<Int, Any>(
                 0 to arrayOf(FloatArray(5))

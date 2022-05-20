@@ -26,20 +26,8 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.experimental.and
 
-
-
 private const val LOG_TAG = "AudioRecordTest"
 private const val REQUEST_RECORD_AUDIO_PERMISSION = 200
-
-private fun getLE(buffer: ByteArray, pos: Int, numBytes: Int): Long {
-    var pos = pos
-    var numBytes = numBytes
-    numBytes--
-    pos += numBytes
-    var `val`: Long = (buffer[pos] and 0xFF.toByte()).toLong()
-    for (b in 0 until numBytes) `val` = (`val` shl 8) + (buffer[--pos] and 0xFF.toByte())
-    return `val`
-}
 
 class MainActivity : AppCompatActivity() {
 
@@ -133,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun testRun(
         context: Context,
-        recordAudio: Boolean = true,
+        recordAudio: Boolean = false,
         createMfcc: Boolean = true,
         classify: Boolean = true)
     {
