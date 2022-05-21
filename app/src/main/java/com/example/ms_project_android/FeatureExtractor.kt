@@ -35,7 +35,7 @@ class FeatureExtractor(context: Context) {
         return runState == smileres_t.SMILE_SUCCESS
     }
 
-    fun getFeatures(): HashMap<String, Float> {
+    fun getFeatures(): Array<FloatArray> {
         val reader = CSVHandler()
         return reader.read(outCsvPath)
     }

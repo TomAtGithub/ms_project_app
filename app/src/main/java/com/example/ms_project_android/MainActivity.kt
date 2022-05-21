@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
             Log.d(logTag, "feature extraction $hrState")
         }
         val features = featureExtractor.getFeatures()
-        Log.d(logTag, "features loaded ${features.values.size}")
+        Log.d(logTag, "features loaded ${features.contentDeepToString()}")
 
         if(classify) {
             val audioClassifier = AudioClassifier(context)
