@@ -7,13 +7,13 @@ package com.example.ms_project_android
 import android.content.Context
 import android.content.res.AssetManager
 import android.util.Log
-import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import java.util.*
+import kotlin.collections.HashMap
 
 
 private const val LOG_TAG = "AudioClassifier"
@@ -42,15 +42,12 @@ class AudioClassifier(context: Context) {
 
             // model uses only the first 288 columns (mfcc features only)
 //            val featureVector = FloatArray(684)
-            val featureSet = features.values.toFloatArray()
-            val featureSubset = featureSet.copyOfRange(0, 228)
+            val featureSet = features.values.toFloatArray().copyOfRange(0, 228)
 //            System.arraycopy(featureSet, 0, featureVector, 0, featureSet.size)
-//            val input = arrayOf(FloatArray(88))
-            val input = arrayOf(
-                arrayOf(featureSubset)
-            )
+            val input = arrayOf(arrayOf(featureSet))
 
-            Log.d(LOG_TAG, "input: ${input[0].size}, ${input[0][0].size}")
+            Log.d(LOG_TAG, "input shape: (${input[0].size}, ${input[0][0].size})")
+            Log.d(LOG_TAG, "input features: ${input.contentDeepToString()}")
 
             val outputMap = hashMapOf<Int, Any>(
                 0 to arrayOf(FloatArray(5))
@@ -69,7 +66,7 @@ class AudioClassifier(context: Context) {
         val resultMap = hashMapOf<String, Float>()
         val probabilities = outputMap[0]!![0]
 
-        Log.d(LOG_TAG, "output size ${probabilities.size}")
+        Log.d(LOG_TAG, "output raw: ${outputMap[0]!![0].contentToString()}")
 
         for(it in probabilities.withIndex()) {
             val label = OUTPUT_LABEL_MAP[it.index]!!
@@ -81,7 +78,7 @@ class AudioClassifier(context: Context) {
         val bestIndex = probabilities.indexOfFirst {it == best}
         val bestLabel = OUTPUT_LABEL_MAP[bestIndex]!!
 
-        Log.d(LOG_TAG, "output results ${resultMap}")
+        Log.d(LOG_TAG, "output labeled: $resultMap")
 
         return ClassificationResults(label = bestLabel, probability = best, resultMap)
     }

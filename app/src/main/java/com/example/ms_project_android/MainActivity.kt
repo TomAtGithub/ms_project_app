@@ -116,15 +116,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-//        testRun(this)
-//        val value = java.lang.Long.parseLong("-4.945681e1", 16)
-//        Log.d(LOG_TAG, "TEST ${value.toFloat()}")
+        testRun(this)
     }
 
     private fun testRun(
         context: Context,
         recordAudio: Boolean = false,
-        createMfcc: Boolean = false,
+        createMfcc: Boolean = true,
         classify: Boolean = true)
     {
         val logTag = "TEST_RUN"
