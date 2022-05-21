@@ -67,7 +67,7 @@ class RecordedFragment : Fragment() {
                 val results = audioClassifier.classify(features)
 
                 if(results != null) {
-                    infoText = "Label: ${results.label}, Probability: ${results.probability}"
+                    infoText = "Label: ${results.label}, Probability: ${results.probability}\n${results.probabilities}"
                 }
             }
             infoTextView.text = infoText
