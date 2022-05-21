@@ -1,9 +1,11 @@
 package com.example.ms_project_android
 
+import android.util.Log
 import java.io.FileReader
 
 private const val DELIMITER = ";"
 private const val LOG_TAG = "CSVHandler"
+private const val N_FEATURES = 228
 
 class CSVHandler {
     /**
@@ -12,26 +14,27 @@ class CSVHandler {
      * because the readers I tested ("opencsv", "kotlin-csv") could not handle that.
      *
      */
-    fun read(path: String, to: Int = 288): HashMap<String, Float> {
+    fun read(path: String): Array<FloatArray> {
         val fileReader = FileReader(path)
         val csvData = fileReader.readText()
         val rows = csvData.split("\n")
 
-        val headers = rows[0].split(DELIMITER)
-        val values = rows[1].split(DELIMITER)
-        val dataMap = hashMapOf<String, Float>()
+        val features = Array(rows.size-1) {FloatArray(N_FEATURES)}
 
-        for(index in values.indices) {
-            if(index >= to) {
-                break
-            }
-            val name = headers[index]
-            val value = values[index]
+        for (row_idx in 1 until rows.size-1) {
+            val values = rows[row_idx].split(DELIMITER)
 
-            if(value.isNotEmpty() and value.isNotEmpty()) {
-                dataMap[name] = value.toFloat()
+            for (index in values.indices) {
+                if (index >= N_FEATURES) {
+                    break
+                }
+
+                features[row_idx-1][index] = values[index].toFloat()
             }
         }
-        return dataMap
+
+        Log.d(LOG_TAG, "read features: ${features.contentDeepToString()}")
+
+        return features
     }
 }

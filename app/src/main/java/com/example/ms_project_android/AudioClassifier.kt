@@ -28,6 +28,8 @@ val OUTPUT_LABEL_MAP = hashMapOf<Int, String>(
     4 to "fear"
 )
 
+private const val N_CLASSES = 5
+
 data class ClassificationResults (
     val label: String,
     val probability: Float,
@@ -37,23 +39,24 @@ data class ClassificationResults (
 class AudioClassifier(context: Context) {
     private val interpreter = loadModel(context)
 
-    fun classify(features: HashMap<String, Float>): ClassificationResults? {
+    fun classify(features: Array<FloatArray>): ClassificationResults? {
         if(interpreter != null) {
 
             // model uses only the first 288 columns (mfcc features only)
 //            val featureVector = FloatArray(684)
-            val featureSet = features.values.toFloatArray().copyOfRange(0, 228)
+            //val featureSet = features.values.toFloatArray().copyOfRange(0, 228)
 //            System.arraycopy(featureSet, 0, featureVector, 0, featureSet.size)
-            val input = arrayOf(arrayOf(featureSet))
+            //val input = arrayOf(arrayOf(featureSet))
 
-            Log.d(LOG_TAG, "input shape: (${input[0].size}, ${input[0][0].size})")
-            Log.d(LOG_TAG, "input features: ${input.contentDeepToString()}")
+            /*Log.d(LOG_TAG, "input shape: (${input[0].size}, ${input[0][0].size})")
+            Log.d(LOG_TAG, "input features: ${input.contentDeepToString()}")*/
+            Log.d(LOG_TAG, "input features: ${features.contentDeepToString()}")
 
             val outputMap = hashMapOf<Int, Any>(
                 0 to arrayOf(FloatArray(5))
             )
 
-            interpreter.runForMultipleInputsOutputs(input, outputMap)
+            interpreter.runForMultipleInputsOutputs(features, outputMap)
 
             return this.outputToLabel(outputMap as HashMap<Int, Array<FloatArray>>)
         } else {
@@ -63,6 +66,7 @@ class AudioClassifier(context: Context) {
     }
 
     private fun outputToLabel(outputMap: HashMap<Int, Array<FloatArray>>): ClassificationResults {
+
         val resultMap = hashMapOf<String, Float>()
         val probabilities = outputMap[0]!![0]
 

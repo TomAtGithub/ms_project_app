@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
@@ -119,10 +120,22 @@ class MainActivity : AppCompatActivity() {
         testRun(this)
     }
 
+    private fun cacheAsset(filename: String, dst: String = cacheDir.absolutePath): String {
+        val pathname = "$dst/$filename"
+        val outfile = File(pathname).apply { parentFile?.mkdirs() }
+        assets.open(filename).use { inputStream ->
+            FileOutputStream(outfile).use { outputStream ->
+                inputStream.copyTo(outputStream)
+            }
+        }
+        Log.d(LOG_TAG, "copy $pathname to $outfile")
+        return outfile.path
+    }
+
     private fun testRun(
         context: Context,
         recordAudio: Boolean = false,
-        createMfcc: Boolean = true,
+        createMfcc: Boolean = false,
         classify: Boolean = true)
     {
         val logTag = "TEST_RUN"
@@ -144,7 +157,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-
+        val cachePath = context.externalCacheDir?.path!!
+        cacheAsset("test.csv", cachePath)
 
         val featureExtractor = FeatureExtractor(context)
         if(createMfcc) {
@@ -158,18 +172,42 @@ class MainActivity : AppCompatActivity() {
 
             Log.d(logTag, "feature extraction $hrState")
         }
-        val features = featureExtractor.getFeatures()
-        Log.d(logTag, "features loaded ${features.values.size}")
+        val last_idx = 366
+        //val last_idx = 2
+        val classes = arrayOf(0, 0, 0, 0, 0)
 
-        if(classify) {
+
+        val features = featureExtractor.getFeatures()
+        //Log.d(logTag, "features loaded ${features.values.size}")
+
+        if (classify) {
             val audioClassifier = AudioClassifier(context)
-            val results = audioClassifier.classify(features)
-            if(results != null) {
-                Log.d(logTag, "classification: audio classified as ${results.label} with probability ${results.probability}")
-                Log.d(logTag, "classification: probabilities ${results.probabilities}")
-            } else {
-                Log.d(logTag, "classification: FAILED")
+            for (row in features) {
+                val results = audioClassifier.classify(arrayOf(row))
+                if (results != null) {
+                    if (results.label.equals("neutral")) {
+                        classes[0] += 1
+                    } else if (results.label.equals("happiness")) {
+                        classes[1] += 1
+                    } else if (results.label.equals("sadness")) {
+                        classes[2] += 1
+                    } else if (results.label.equals("anger")) {
+                        classes[3] += 1
+                    } else if (results.label.equals("fear")) {
+                        classes[4] += 1
+                    }
+                    Log.d(
+                        logTag,
+                        "classification: audio classified as ${results.label} with probability ${results.probability}"
+                    )
+                    Log.d(logTag, "classification: probabilities ${results.probabilities}")
+                } else {
+                    Log.d(logTag, "classification: FAILED")
+                }
             }
         }
+
+        val infoTextView = findViewById<TextView>(R.id.textView2)
+        infoTextView.setText("\n\n\n\n\n\nNeutral: " + classes[0] + "\nHappiness: " + classes[1] + "\nSadness: " + classes[2] + "\nAnger: " + classes[3] + "\n Fear: " + classes[4])
     }
 }

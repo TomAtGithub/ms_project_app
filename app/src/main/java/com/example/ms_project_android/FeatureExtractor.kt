@@ -11,7 +11,8 @@ private const val LOG_TAG = "FeatureExtractor"
 class FeatureExtractor(context: Context) {
 
     private val configPath = Utils.getAsset(context, OPEN_SMILE_CONFIG).absolutePath
-    private val outCsvPath = "${context.externalCacheDir?.path!!}/mfcc.func.csv"
+    //private val outCsvPath = "${context.externalCacheDir?.path!!}/test.csv"
+    private val outCsvPath = "${context.externalCacheDir?.path!!}/test.csv"
 
     fun run(audioPath: String): Boolean {
 
@@ -35,7 +36,7 @@ class FeatureExtractor(context: Context) {
         return runState == smileres_t.SMILE_SUCCESS
     }
 
-    fun getFeatures(): HashMap<String, Float> {
+    fun getFeatures(): Array<FloatArray> {
         val reader = CSVHandler()
         return reader.read(outCsvPath)
     }
