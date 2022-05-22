@@ -60,7 +60,9 @@ class MainActivity : AppCompatActivity() {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
 //        binding.fab.setOnClickListener { view -> this.onFab(view, navController) }
 
-        GlobalConfig.init(this, cacheDir.path)
+        GlobalConfig.init(this, externalCacheDir?.path!!)
+        val csvHandler = CSVHandler()
+        csvHandler.deleteFile(GlobalConfig.getInstance().evaluationCsvPath)
     }
 
     override fun onRequestPermissionsResult(

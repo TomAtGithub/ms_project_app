@@ -100,11 +100,11 @@ class RecognitionFragment : Fragment() {
                 runClassification(view)
                 stateNext = true
                 stateEmotion += 1
+//                stateEmotion += 5
             } else {
                 startRecording(view, fab)
             }
         }
-
     }
 
     private fun initView(view: View, fab: FloatingActionButton) {
@@ -131,7 +131,6 @@ class RecognitionFragment : Fragment() {
             if(mAudioRecorder.isRecording()) {
                 val duration = (mAudioRecorder.getDuration()).toFloat() / 1000
                 view.text = String.format("%.02f", duration)
-                Log.d(LOG_TAG, "timeDiff $duration")
                 updateRecordDuration(view)
             }
         }, 100)
@@ -185,49 +184,13 @@ class RecognitionFragment : Fragment() {
 
                     Log.d(LOG_TAG, "$entry")
                 }
+
+                saveResults(results)
             }
         }
-
     }
 
-    private fun showResults(results: ClassificationResults?) {
-        if(results != null) {
-
-        }
-    }
-
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RecognitionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RecognitionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
-}
-
-object Stopwatch {
-    inline fun elapse(callback: () -> Unit): Long {
-        var start = System.currentTimeMillis()
-        callback()
-        return System.currentTimeMillis() - start
-    }
-
-    inline fun elapseNano(callback: () -> Unit): Long {
-        var start = System.nanoTime()
-        callback()
-        return System.nanoTime() - start
+    private fun saveResults(results: ClassificationResults) {
+        mAudioClassifier.saveResults(results, stateEmotion)
     }
 }

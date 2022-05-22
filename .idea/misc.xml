@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_recorded.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/fragment_recording.xml" value="0.18177083333333333" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.18177083333333333" />
+        <entry key="app/src/main/res/layout/fragment_share.xml" value="0.33" />
       </map>
     </option>
   </component>

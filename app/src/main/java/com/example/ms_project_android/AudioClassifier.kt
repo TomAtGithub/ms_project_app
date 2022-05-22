@@ -12,7 +12,6 @@ import java.io.FileInputStream
 import java.io.IOException
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
-import java.util.*
 import kotlin.collections.HashMap
 
 
@@ -39,6 +38,21 @@ data class ClassificationResults (
 class AudioClassifier(context: Context) {
     private val interpreter = loadModel(context)
 
+    fun getEmotionLabel(number: Int): String? {
+        return if(number in 0..4) {
+            OUTPUT_LABEL_MAP[number]
+        } else {
+            null
+        }
+    }
+    fun getEmotionLabels(): Array<String> {
+        val labels = mutableListOf<String>()
+        for(i in 0 until OUTPUT_LABEL_MAP.size) {
+            labels.add(getEmotionLabel(i)!!)
+        }
+        return labels.toTypedArray()
+    }
+
     fun classify(features: Array<FloatArray>): ClassificationResults? {
         if(interpreter != null) {
 
@@ -63,6 +77,27 @@ class AudioClassifier(context: Context) {
         }
     }
 
+    fun saveResults(results: ClassificationResults, emotionId: Int): Boolean{
+        val emotion = getEmotionLabel(emotionId) ?: return false
+
+        var labels = getEmotionLabels()
+        val values = mutableListOf<String>()
+
+        for(label in labels) {
+            values.add(results.probabilities[label].toString())
+        }
+        labels = labels.plus("requested")
+        values.add(emotion)
+
+        Log.d(LOG_TAG, "saveResults, ${results.probabilities.toString()}")
+        Log.d(LOG_TAG, "saveResults, $emotion $emotionId ${labels.contentToString()} ${values.toString()}")
+
+        val csvHandler = CSVHandler()
+        csvHandler.write(values.toTypedArray(), header = labels)
+
+        return true
+    }
+
     private fun outputToLabel(outputMap: HashMap<Int, Array<FloatArray>>): ClassificationResults {
 
         val resultMap = hashMapOf<String, Float>()
@@ -71,7 +106,7 @@ class AudioClassifier(context: Context) {
         Log.d(LOG_TAG, "output raw: ${outputMap[0]!![0].contentToString()}")
 
         for(it in probabilities.withIndex()) {
-            val label = OUTPUT_LABEL_MAP[it.index]!!
+            val label = getEmotionLabel(it.index)!!
             val prob = it.value
             resultMap[label] = prob
         }

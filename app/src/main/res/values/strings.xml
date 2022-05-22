@@ -50,26 +50,32 @@
     <string name="recognition_emo1_headline">Emotion Classification</string>
     <string name="recognition_emo1_task_name">Happy Emotion</string>
     <string name="recognition_emo1_task">
-        Record a neutral emotion
+        Record a happy emotion
     </string>
 
     <string name="recognition_emo2_headline">Emotion Classification</string>
     <string name="recognition_emo2_task_name">Sad Emotion</string>
     <string name="recognition_emo2_task">
-        Record a neutral emotion
+        Record a sad emotion
     </string>
 
     <string name="recognition_emo3_headline">Emotion Classification</string>
     <string name="recognition_emo3_task_name">Angry Emotion</string>
     <string name="recognition_emo3_task">
-        Record a neutral emotion
+        Record a angry emotion
     </string>
 
     <string name="recognition_emo4_headline">Emotion Classification</string>
     <string name="recognition_emo4_task_name">Fearful Emotion</string>
     <string name="recognition_emo4_task">
-        Record a neutral emotion
+        Record a fearful emotion
     </string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="share_headline">Share your Results</string>
+    <string name="share_info">
+        Thank you for helping us to evaluate our project work.\n
+        Please share you results now with us.\n
+        As mentioned in the beginning only the statistics will be shared and not you records.
+    </string>
+
 </resources>

@@ -1,7 +1,9 @@
 package com.example.ms_project_android
 
 import android.util.Log
+import java.io.File
 import java.io.FileReader
+import java.io.FileWriter
 
 private const val DELIMITER = ";"
 private const val LOG_TAG = "CSVHandler"
@@ -36,5 +38,24 @@ class CSVHandler {
         Log.d(LOG_TAG, "read features: ${features.contentDeepToString()}")
 
         return features
+    }
+
+    fun write(input: Array<String>, header: Array<String>) {
+        val config = GlobalConfig.getInstance()
+        val file = File(config.evaluationCsvPath)
+        val separator = ","
+
+        if(!file.exists()) {
+            file.writeText(header.joinToString(separator)+"\n")
+        }
+        file.appendText(input.joinToString(separator)+"\n")
+    }
+
+    fun deleteFile(filePath: String) {
+        val file = File(filePath)
+        if(file.exists()) {
+            file.delete()
+            Log.d(LOG_TAG, "DELETE FILE")
+        }
     }
 }
