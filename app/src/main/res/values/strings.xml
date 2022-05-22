@@ -51,7 +51,7 @@
     <string name="recognition_emo1_task_name">Happy Emotion</string>
     <string name="recognition_emo1_task">
         Record a happy emotion
-    </string>
+    </string>neutral
 
     <string name="recognition_emo2_headline">Emotion Classification</string>
     <string name="recognition_emo2_task_name">Sad Emotion</string>
