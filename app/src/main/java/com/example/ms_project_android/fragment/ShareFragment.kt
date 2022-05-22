@@ -37,7 +37,7 @@ class ShareFragment : Fragment() {
 
     private fun composeEmail() {
         val config = GlobalConfig.getInstance()
-        val addresses = arrayOf("tr9865@student.uni-lj.si")
+        val addresses = arrayOf("tr9865@student.uni-lj.si", "dv6968@student.uni-lj.si")
         val subject = "ms-project_evaluation"
         val file = File(config.evaluationCsvPath)
         val intent = Intent(Intent.ACTION_SENDTO)
