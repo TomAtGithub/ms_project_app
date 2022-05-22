@@ -44,7 +44,7 @@
     <string name="recognition_emo0_headline">Emotion Classification</string>
     <string name="recognition_emo0_task_name">Neutral Emotion</string>
     <string name="recognition_emo0_task">
-        Record a neutral emotion
+        Describe your surroundings and the weather in a neutral way
     </string>
 
     <string name="recognition_emo1_headline">Emotion Classification</string>
@@ -62,7 +62,10 @@
     <string name="recognition_emo3_headline">Emotion Classification</string>
     <string name="recognition_emo3_task_name">Angry Emotion</string>
     <string name="recognition_emo3_task">
-        Record a angry emotion
+        Your flatmate Jerry, did again "forgott" to clean the dishes. Even though you told him yesterday.\n
+        It is going like this since weeks now.\n
+        Record a angry voice message and tell jerry that you can not live like this anymore and he should clean the dishes immediately when he comes home.
+        Otherwise you might change the password of your netflix account which he also uses.
     </string>
 
     <string name="recognition_emo4_headline">Emotion Classification</string>
