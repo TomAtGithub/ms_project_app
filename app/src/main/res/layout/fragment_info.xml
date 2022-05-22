@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
+    android:windowActionBarOverlay="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fragment.InfoFragment">
+
+    <TextView
+        style="@style/headline"
+        android:text="@string/info_title" />
+
+    <TextView
+        style="@style/title"
+        android:text="About"/>
+
+    <TextView
+        style="@style/text"
+        android:text="@string/info_info" />
+
+    <TextView
+        style="@style/title"
+        android:text="Privacy" />
+
+    <TextView
+        style="@style/text"
+        android:text="@string/info_privacy" />
+
+    <Button
+        style="@style/button"
+        android:text="Next" />
+
+</LinearLayout>

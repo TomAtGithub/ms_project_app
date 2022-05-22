@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        testRun(this)
+//        testRun(this)
     }
 
     private fun testRun(
