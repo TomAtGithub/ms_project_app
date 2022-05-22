@@ -81,8 +81,8 @@ class RecognitionFragment : Fragment() {
 
     private fun startRun(view: View, fab: FloatingActionButton) {
         // test run = -1
-        // emotion = 0 - 5
-        // next = 6
+        // emotion = 0 - 4
+        // next = 5
 
         Log.d(LOG_TAG, "startRun $stateNext $stateEmotion")
 
