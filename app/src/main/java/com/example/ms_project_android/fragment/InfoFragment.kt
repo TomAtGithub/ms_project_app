@@ -1,16 +1,20 @@
 package com.example.ms_project_android.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import com.example.ms_project_android.R
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
+private const val LOG_TAG = "InfoFragment"
 
 /**
  * A simple [Fragment] subclass.
@@ -36,6 +40,14 @@ class InfoFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_info, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val btnNext = view.findViewById<Button>(R.id.btn_next)
+        btnNext.setOnClickListener {
+            findNavController().navigate(R.id.action_infoFragment_to_recognitionFragment)
+        }
     }
 
     companion object {

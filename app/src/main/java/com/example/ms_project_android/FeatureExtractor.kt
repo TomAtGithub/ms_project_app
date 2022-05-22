@@ -8,10 +8,13 @@ import com.audeering.opensmile.smileres_t
 private const val OPEN_SMILE_CONFIG = "config/MFCC12_0_D_A.func.conf"
 private const val LOG_TAG = "FeatureExtractor"
 
-class FeatureExtractor(context: Context) {
+class FeatureExtractor(openSmileConfigPath: String, outCsvPath: String) {
 
-    private val configPath = Utils.getAsset(context, OPEN_SMILE_CONFIG).absolutePath
-    private val outCsvPath = "${context.externalCacheDir?.path!!}/mfcc.func.csv"
+    private val configPath = openSmileConfigPath
+    private val outCsvPath = outCsvPath
+
+//    private val configPath = Utils.getAsset(context, OPEN_SMILE_CONFIG).absolutePath
+//    private val outCsvPath = "${context.externalCacheDir?.path!!}/mfcc.func.csv"
 
     fun run(audioPath: String): Boolean {
 

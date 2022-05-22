@@ -16,11 +16,11 @@ class RecordingFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val context = this.activity
-        if(context != null) {
-            mAudioRecorder = AudioRecorder(Config.getRecordPath(context))
-            mAudioRecorder.startRecording()
-        }
+//        val context = this.activity
+//        if(context != null) {
+//            mAudioRecorder = AudioRecorder(Config.getRecordPath(context))
+//            mAudioRecorder.startRecording()
+//        }
     }
 
     override fun onCreateView(
@@ -38,7 +38,7 @@ class RecordingFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        mAudioRecorder.stopRecording()
-        Log.d(LOG_TAG, "ON STOP")
+//        mAudioRecorder.stopRecording()
+//        Log.d(LOG_TAG, "ON STOP")
     }
 }

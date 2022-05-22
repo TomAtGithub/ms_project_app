@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:layout_behavior="android.support.design.widget.AppBarLayout$ScrollingViewBehavior"
-    android:windowActionBarOverlay="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -30,7 +28,8 @@
         android:text="@string/info_privacy" />
 
     <Button
+        android:id="@+id/btn_next"
         style="@style/button"
-        android:text="Next" />
+        android:text="Next"/>
 
 </LinearLayout>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginLeft="10dp"
+android:layout_marginRight="10dp"
+android:orientation="vertical"
+tools:context=".fragment.RecognitionFragment">
+
+    <TextView
+        style="@style/headline"
+        android:text="@string/recognition_headline" />
+
+    <TextView
+        style="@style/title"
+        android:text="@string/recognition_task_name"/>
+
+    <TextView
+        style="@style/text"
+        android:text="@string/recognition_task" />
+
+    <TextView
+        style="@style/title"
+        android:text="Record"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recording:" />
+
+        <TextView
+            android:id="@+id/record_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="NO" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Duration" />
+
+        <TextView
+            android:id="@+id/record_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="0" />
+    </LinearLayout>
+
+    <TableLayout
+        style="@style/Widget.Material3.TabLayout"
+        android:id="@+id/recognition_table"
+        android:layout_width="match_parent"
+        android:layout_height="187dp"
+        android:layout_marginTop="10dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:text="TEST"
+                />
+            <TextView
+                android:text="TEST2"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+            <TextView
+                android:text="TEST_222222"
+                />
+            <TextView
+                android:text="TEST2"
+                />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </TableLayout>
+
+</LinearLayout>

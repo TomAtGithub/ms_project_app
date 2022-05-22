@@ -12,7 +12,8 @@
     <string name="no_record">Please record</string>
     <string name="record_in_progress">Recording</string>
     <string name="record_available">Record</string>
-    <!-- TODO: Remove or change this placeholder text -->
+
+
     <string name="info_title">Welcome to Emotion Classification Evaluation</string>
     <string name="info_info">
         In this app we want to evaluate the performance of our speech emotion recognition model.
@@ -32,4 +33,41 @@
         If you continue with the next steps you allow us to automatically analyze you records.
     </string>
 
+    <string name="recognition_headline">Emotion Classification</string>
+    <string name="recognition_task_name">Test Run</string>
+    <string name="recognition_task">
+        This is the Test Run. It will make you familiar with the app.
+        Tab on the action button on the bottom left to start the voice recording
+        and tab it again to stop it.
+    </string>
+
+    <string name="recognition_emo0_headline">Emotion Classification</string>
+    <string name="recognition_emo0_task_name">Neutral Emotion</string>
+    <string name="recognition_emo0_task">
+        Record a neutral emotion
+    </string>
+    
+    <string name="recognition_emo1_headline">Emotion Classification</string>
+    <string name="recognition_emo1_task_name">Happy Emotion</string>
+    <string name="recognition_emo1_task">
+        Record a neutral emotion
+    </string>
+
+    <string name="recognition_emo2_headline">Emotion Classification</string>
+    <string name="recognition_emo2_task_name">Sad Emotion</string>
+    <string name="recognition_emo2_task">
+        Record a neutral emotion
+    </string>
+
+    <string name="recognition_emo3_headline">Emotion Classification</string>
+    <string name="recognition_emo3_task_name">Angry Emotion</string>
+    <string name="recognition_emo3_task">
+        Record a neutral emotion
+    </string>
+
+    <string name="recognition_emo4_headline">Emotion Classification</string>
+    <string name="recognition_emo4_task_name">Fearful Emotion</string>
+    <string name="recognition_emo4_task">
+        Record a neutral emotion
+    </string>
 </resources>

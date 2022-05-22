@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/infoFragment">
+    app:startDestination="@id/recognitionFragment">
 
     <fragment
         android:id="@+id/recordingFragment"
@@ -12,7 +12,8 @@
         tools:layout="@layout/fragment_recording" >
         <action
             android:id="@+id/action_recordingFragment_to_recordedFragment"
-            app:destination="@id/recordedFragment" />
+            app:destination="@id/recordedFragment"
+            />
     </fragment>
     <fragment
         android:id="@+id/recordedFragment"
@@ -41,5 +42,14 @@
         android:id="@+id/infoFragment"
         android:name="com.example.ms_project_android.fragment.InfoFragment"
         android:label="fragment_info"
-        tools:layout="@layout/fragment_info" />
+        tools:layout="@layout/fragment_info" >
+        <action
+            android:id="@+id/action_infoFragment_to_recognitionFragment"
+            app:destination="@id/recognitionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recognitionFragment"
+        android:name="com.example.ms_project_android.fragment.RecognitionFragment"
+        android:label="fragment_recognition"
+        tools:layout="@layout/fragment_recognition" />
 </navigation>

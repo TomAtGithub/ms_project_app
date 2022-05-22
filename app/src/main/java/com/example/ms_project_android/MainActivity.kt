@@ -58,7 +58,9 @@ class MainActivity : AppCompatActivity() {
 //        setupActionBarWithNavController(navController, appBarConfiguration)
 
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION)
-        binding.fab.setOnClickListener { view -> this.onFab(view, navController) }
+//        binding.fab.setOnClickListener { view -> this.onFab(view, navController) }
+
+        GlobalConfig.init(this, cacheDir.path)
     }
 
     override fun onRequestPermissionsResult(
@@ -126,9 +128,10 @@ class MainActivity : AppCompatActivity() {
         classify: Boolean = true)
     {
         val logTag = "TEST_RUN"
+        val config = GlobalConfig.getInstance()
 
         if(recordAudio) {
-            val audioPath = Config.getRecordPath(context)
+            val audioPath = config.recordPath
             val mAudioRecorder = AudioRecorder(audioPath)
             val duration: Long = 5000
             val handler = Handler()
@@ -144,9 +147,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-
-
-        val featureExtractor = FeatureExtractor(context)
+        val featureExtractor = FeatureExtractor(
+            openSmileConfigPath = config.openSmileConfigPath,
+            outCsvPath = config.evaluationCsvPath
+        )
         if(createMfcc) {
             val audioPath = Utils.getAsset(context, "audio/test.wav").absolutePath
             val ok = featureExtractor.run(audioPath)

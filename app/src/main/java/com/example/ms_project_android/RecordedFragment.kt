@@ -52,25 +52,25 @@ class RecordedFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        Log.d(LOG_TAG, "ON STARTED")
 
-        val context = this.activity
-        var infoText = "ERROR"
-        if(context != null) {
-            val infoTextView = context.findViewById<TextView>(R.id.textViewInfo)
-            val featureExtractor = FeatureExtractor(context)
-            val ok = featureExtractor.run(Config.getRecordPath(context))
-
-            if(ok) {
-                val features = featureExtractor.getFeatures()
-                val audioClassifier = AudioClassifier(context)
-                val results = audioClassifier.classify(features)
-
-                if(results != null) {
-                    infoText = "Label: ${results.label}, Probability: ${results.probability}\n${results.probabilities}"
-                }
-            }
-            infoTextView.text = infoText
-        }
+//        Log.d(LOG_TAG, "ON STARTED")
+//        val context = this.activity
+//        var infoText = "ERROR"
+//        if(context != null) {
+//            val infoTextView = context.findViewById<TextView>(R.id.textViewInfo)
+//            val featureExtractor = FeatureExtractor(context)
+//            val ok = featureExtractor.run(Config.getRecordPath(context))
+//
+//            if(ok) {
+//                val features = featureExtractor.getFeatures()
+//                val audioClassifier = AudioClassifier(context)
+//                val results = audioClassifier.classify(features)
+//
+//                if(results != null) {
+//                    infoText = "Label: ${results.label}, Probability: ${results.probability}\n${results.probabilities}"
+//                }
+//            }
+//            infoTextView.text = infoText
+//        }
     }
 }
