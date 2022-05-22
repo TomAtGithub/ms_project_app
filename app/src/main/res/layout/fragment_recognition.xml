@@ -14,10 +14,12 @@ tools:context=".fragment.RecognitionFragment">
         android:text="@string/recognition_headline" />
 
     <TextView
+        android:id="@+id/recognition_title"
         style="@style/title"
         android:text="@string/recognition_task_name"/>
 
     <TextView
+        android:id="@+id/recognition_text"
         style="@style/text"
         android:text="@string/recognition_task" />
 
@@ -63,36 +65,6 @@ tools:context=".fragment.RecognitionFragment">
         android:layout_width="match_parent"
         android:layout_height="187dp"
         android:layout_marginTop="10dp">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:text="TEST"
-                />
-            <TextView
-                android:text="TEST2"
-                />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" >
-            <TextView
-                android:text="TEST_222222"
-                />
-            <TextView
-                android:text="TEST2"
-                />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
     </TableLayout>
 
 </LinearLayout>

@@ -51,5 +51,14 @@
         android:id="@+id/recognitionFragment"
         android:name="com.example.ms_project_android.fragment.RecognitionFragment"
         android:label="fragment_recognition"
-        tools:layout="@layout/fragment_recognition" />
+        tools:layout="@layout/fragment_recognition" >
+        <action
+            android:id="@+id/action_recognitionFragment_to_shareFragment"
+            app:destination="@id/shareFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shareFragment"
+        android:name="com.example.ms_project_android.fragment.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share" />
 </navigation>

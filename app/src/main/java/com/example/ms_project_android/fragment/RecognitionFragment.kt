@@ -1,6 +1,5 @@
 package com.example.ms_project_android.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -11,11 +10,9 @@ import android.view.ViewGroup
 import android.widget.TableLayout
 import android.widget.TableRow
 import android.widget.TextView
-import androidx.core.view.marginLeft
+import androidx.navigation.fragment.findNavController
 import com.example.ms_project_android.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,7 +28,8 @@ class RecognitionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var state = -1
+    private var stateNext = false
+    private var stateEmotion = -1
     private lateinit var mConfig: Config
     private lateinit var mAudioRecorder: AudioRecorder
     private lateinit var mFeatureExtractor: FeatureExtractor
@@ -72,7 +70,7 @@ class RecognitionFragment : Fragment() {
             mAudioClassifier = AudioClassifier(mainActivity)
 
             fab.setOnClickListener {
-                this.startRun(view)
+                this.startRun(view, fab)
             }
             fab.visibility = View.VISIBLE
         } else {
@@ -81,27 +79,50 @@ class RecognitionFragment : Fragment() {
 
     }
 
-    fun startRun(view: View) {
+    private fun startRun(view: View, fab: FloatingActionButton) {
         // test run = -1
         // emotion = 0 - 5
         // next = 6
 
-        Log.d(LOG_TAG, "startRun $view")
+        Log.d(LOG_TAG, "startRun $stateNext $stateEmotion")
 
-        if(mAudioRecorder.isRecording()) {
-            stopRecording(view)
-            runClassification(view)
+        if(stateNext) {
+            if(stateEmotion > 4) {
+                fab.visibility = View.GONE
+                findNavController().navigate(R.id.action_recognitionFragment_to_shareFragment)
+            } else {
+                initView(view, fab)
+            }
+            stateNext = false
         } else {
-//            if(state < 0) {
-//
-//            } else if(state <= 5) {
-//
-//            } else {
-//
-//            }
-            startRecording(view)
-            state = +1
+            if(mAudioRecorder.isRecording()) {
+                stopRecording(view, fab)
+                runClassification(view)
+                stateNext = true
+                stateEmotion += 1
+            } else {
+                startRecording(view, fab)
+            }
         }
+
+    }
+
+    private fun initView(view: View, fab: FloatingActionButton) {
+        val tvTitle = view.findViewById<TextView>(R.id.recognition_title)
+        val tvText = view.findViewById<TextView>(R.id.recognition_text)
+        val tvRecordState = view.findViewById<TextView>(R.id.record_state)
+        val tvRecordDuration = view.findViewById<TextView>(R.id.record_duration)
+        val table = view.findViewById<TableLayout>(R.id.recognition_table)
+        val emoState = stateEmotion
+
+        table.removeAllViews()
+
+        tvTitle.text = getString(resources.getIdentifier( "recognition_emo${emoState}_task_name", "string", mConfig.packageName))
+        tvText.text = getString(resources.getIdentifier( "recognition_emo${emoState}_task", "string", mConfig.packageName))
+        tvRecordState.text = "NO"
+        tvRecordDuration.text = "0"
+
+        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_mic_24))
     }
 
     private fun updateRecordDuration(view: TextView) {
@@ -116,20 +137,23 @@ class RecognitionFragment : Fragment() {
         }, 100)
     }
 
-    private fun startRecording(view: View) {
+    private fun startRecording(view: View, fab: FloatingActionButton) {
         mAudioRecorder.startRecording()
 
         val tvRecordState = view.findViewById<TextView>(R.id.record_state)
         val tvRecordDuration = view.findViewById<TextView>(R.id.record_duration)
 
         tvRecordState.text = "YES"
+        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_stop_24))
 
         updateRecordDuration(tvRecordDuration)
     }
-    private fun stopRecording(view: View) {
+    private fun stopRecording(view: View, fab: FloatingActionButton) {
         mAudioRecorder.stopRecording()
         val tvRecordState = view.findViewById<TextView>(R.id.record_state)
         tvRecordState.text = "NO"
+
+        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_navigate_next_24))
     }
 
     private fun runClassification(view: View) {

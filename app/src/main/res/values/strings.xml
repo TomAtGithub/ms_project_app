@@ -46,7 +46,7 @@
     <string name="recognition_emo0_task">
         Record a neutral emotion
     </string>
-    
+
     <string name="recognition_emo1_headline">Emotion Classification</string>
     <string name="recognition_emo1_task_name">Happy Emotion</string>
     <string name="recognition_emo1_task">
@@ -70,4 +70,6 @@
     <string name="recognition_emo4_task">
         Record a neutral emotion
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
