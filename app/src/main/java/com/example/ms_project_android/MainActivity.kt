@@ -181,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         //Log.d(logTag, "features loaded ${features.values.size}")
 
         if (classify) {
-            val audioClassifier = AudioClassifier(context)
+            val audioClassifier = AudioClassifier(context, autoencoder = true)
             for (row in features) {
                 val results = audioClassifier.classify(arrayOf(row))
                 if (results != null) {

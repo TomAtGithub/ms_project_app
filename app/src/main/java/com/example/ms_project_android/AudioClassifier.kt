@@ -20,6 +20,11 @@ private const val LOG_TAG = "AudioClassifier"
 //private const val MODEL_FILENAME = "Emotion_Voice_Detection_Base.tflite"
 //private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile.tflite"
 private const val MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_MFCC_2.tflite"
+private const val AUTOENCODER_MODEL_FILENAME = "Emotion_Voice_Detection_Opensmile_autoencoder.tflite"
+private const val AUTOENCODER_FILENAME = "mfcc_encoder.tflite"
+
+private const val LATENT_FEATURES = 16
+
 val OUTPUT_LABEL_MAP = hashMapOf<Int, String>(
     0 to "neutral",
     1 to "happiness",
@@ -36,8 +41,10 @@ data class ClassificationResults (
     val probabilities: HashMap<String, Float>
 )
 
-class AudioClassifier(context: Context) {
+class AudioClassifier(context: Context, autoencoder: Boolean = false) {
+    private val autoencoder = autoencoder
     private val interpreter = loadModel(context)
+    private val encoder_interpreter = loadAutoencoder(context)
 
     fun classify(features: Array<FloatArray>): ClassificationResults? {
         if(interpreter != null) {
@@ -52,11 +59,29 @@ class AudioClassifier(context: Context) {
             Log.d(LOG_TAG, "input features: ${input.contentDeepToString()}")*/
             Log.d(LOG_TAG, "input features: ${features.contentDeepToString()}")
 
+            var input_features: Array<FloatArray>
+
+            if (this.autoencoder) {
+                val latentMap = hashMapOf<Int, Any>(
+                    0 to arrayOf(FloatArray(LATENT_FEATURES)),
+                    1 to arrayOf(FloatArray(LATENT_FEATURES))
+                )
+                if (encoder_interpreter != null) {
+                    encoder_interpreter.runForMultipleInputsOutputs(features, latentMap)
+                }
+
+                Log.d(LOG_TAG, "latent features (means): ${(latentMap[1] as Array<FloatArray>).contentDeepToString()}")
+                Log.d(LOG_TAG, "latent sd: ${(latentMap[0] as Array<FloatArray>).contentDeepToString()}")
+
+                input_features = latentMap[1] as Array<FloatArray>
+            }
+            else input_features = features
+
             val outputMap = hashMapOf<Int, Any>(
                 0 to arrayOf(FloatArray(5))
             )
 
-            interpreter.runForMultipleInputsOutputs(features, outputMap)
+            interpreter.runForMultipleInputsOutputs(input_features, outputMap)
 
             return this.outputToLabel(outputMap as HashMap<Int, Array<FloatArray>>)
         } else {
@@ -89,7 +114,13 @@ class AudioClassifier(context: Context) {
 
     private fun loadModel(context: Context): Interpreter? {
         try {
-            val modelByteBuffer = loadModelFile(context.assets, MODEL_FILENAME)
+            var modelByteBuffer: MappedByteBuffer? = null
+            if (this.autoencoder) {
+                modelByteBuffer = loadModelFile(context.assets, AUTOENCODER_MODEL_FILENAME)
+            }
+            else {
+                modelByteBuffer = loadModelFile(context.assets, MODEL_FILENAME)
+            }
             if(modelByteBuffer != null) {
                 val tfLite =  Interpreter(modelByteBuffer)
                 tfLite.resizeInput(0, IntArray(375))
@@ -98,6 +129,23 @@ class AudioClassifier(context: Context) {
             return null
         } catch (e: IOException) {
             Log.e(LOG_TAG, "could not load model: ${e.stackTrace}")
+            return null
+        }
+    }
+
+    private fun loadAutoencoder(context: Context): Interpreter? {
+        if (this.autoencoder.not()) return null
+
+        try {
+            val modelByteBuffer = loadModelFile(context.assets, AUTOENCODER_FILENAME)
+            if(modelByteBuffer != null) {
+                val tfLite =  Interpreter(modelByteBuffer)
+                tfLite.resizeInput(0, IntArray(375))
+                return tfLite
+            }
+            return null
+        } catch (e: IOException) {
+            Log.e(LOG_TAG, "could not load autoencoder: ${e.stackTrace}")
             return null
         }
     }

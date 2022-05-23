@@ -63,7 +63,7 @@ class RecordedFragment : Fragment() {
 
             if(ok) {
                 val features = featureExtractor.getFeatures()
-                val audioClassifier = AudioClassifier(context)
+                val audioClassifier = AudioClassifier(context, autoencoder = true)
                 val results = audioClassifier.classify(features)
 
                 if(results != null) {
