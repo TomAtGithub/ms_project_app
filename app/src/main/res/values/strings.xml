@@ -16,19 +16,17 @@
 
     <string name="info_title">Welcome to Emotion Classification Evaluation</string>
     <string name="info_info">
-        In this app we want to evaluate the performance of our speech emotion recognition model.
-        I this app we will ask you to record voice messages in 5 different emotional states:
-        neutral, happy, sad, angry, fearful.
-        To bring you into an emotional state. We will describe a situation for each emotion and
-        ask you to record a response to the given situation.
-        But this are just examples. If you have an better idea you can also record an different text.
-        Important is that you try to do it in the given emotional state.
-        The duration of you record should be around 1 minute or longer.
+        In this app we want to evaluate the performance of our speech emotion recognition (SER) model.
+        We will ask you to record voice messages in 5 different emotional states: neutral, happy, sad, angry and fearful.
+        We provide examples for each emotion to inspire you. But you can also come up with your own ideas.
+        Take your time to think about a good story which you can tell in the given emotional state.
+        Each record should be in English and around 60 seconds.
+        It is best if your are in a silent environment while recording.
     </string>
     <string name="info_privacy">
-        In the end we will ask you to share the results with us. So that we can evaluate them.
+        In the end we will ask you to share the results with us for evaluation purposes.
         Your records are analyzed on the device (NOT in the cloud)
-        and will NOT be part of the send and analyzed data.
+        and will NOT be part of the shared data.
         Only the requested emotional state and the classification results are part of it.
         If you continue with the next steps you allow us to automatically analyze you records.
     </string>
@@ -43,7 +41,7 @@
         <p>How to use the App:</p>
         <em>
         <ol>
-        <li>Press on the button on the bottom left to start the recording</li>
+        <li>Press on the button on the bottom right to start the recording</li>
         <li>Press the button again to stop the recording</li>
         <li>Press it again to go to the next task</li>
         </ol>
@@ -60,7 +58,7 @@
         <p>For Example:</p>
         <em>
         <ul>
-        <li>Describe your surroundings and the weather in a neutral way</li>
+        <li>Describe your surroundings or the weather in a neutral way.</li>
         </ul>
         </em>
         ]]>

@@ -3,41 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/recognitionFragment">
+    app:startDestination="@id/infoFragment">
 
-    <fragment
-        android:id="@+id/recordingFragment"
-        android:name="com.example.ms_project_android.RecordingFragment"
-        android:label="fragment_recording"
-        tools:layout="@layout/fragment_recording" >
-        <action
-            android:id="@+id/action_recordingFragment_to_recordedFragment"
-            app:destination="@id/recordedFragment"
-            />
-    </fragment>
-    <fragment
-        android:id="@+id/recordedFragment"
-        android:name="com.example.ms_project_android.RecordedFragment"
-        android:label="fragment_recorded"
-        tools:layout="@layout/fragment_recorded" >
-        <action
-            android:id="@+id/action_recordedFragment_to_recordingFragment"
-            app:destination="@id/recordingFragment" />
-        <argument
-            android:name="recordStats"
-            app:argType="com.example.ms_project_android.RecordStats"
-            app:nullable="true"
-            android:defaultValue="@null" />
-    </fragment>
-    <fragment
-        android:id="@+id/firstFragment"
-        android:name="com.example.ms_project_android.FirstFragment"
-        android:label="fragment_first"
-        tools:layout="@layout/fragment_first" >
-        <action
-            android:id="@+id/action_firstFragment_to_recordingFragment"
-            app:destination="@id/recordingFragment" />
-    </fragment>
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.example.ms_project_android.fragment.InfoFragment"

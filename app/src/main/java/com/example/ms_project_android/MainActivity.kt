@@ -101,23 +101,6 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    private fun onFab(view: View, navController: NavController) {
-        when (navState) {
-            1 -> {
-                navState = 2
-                navController.navigate(R.id.action_firstFragment_to_recordingFragment)
-            }
-            2 -> {
-                navState = 3
-                navController.navigate(R.id.action_recordingFragment_to_recordedFragment)
-            }
-            3 -> {
-                navState = 2
-                navController.navigate(R.id.action_recordedFragment_to_recordingFragment)
-            }
-        }
-    }
-
     override fun onStart() {
         super.onStart()
 //        testRun(this)
