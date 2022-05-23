@@ -15,6 +15,7 @@ import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.example.ms_project_android.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.w3c.dom.Text
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -128,7 +129,7 @@ class RecognitionFragment : Fragment() {
         tvTitle.text = parseHtml(emoState, title = true)
         tvText.text = parseHtml(emoState)
         tvRecordState.text = "NO"
-        tvRecordDuration.text = "0"
+        tvRecordDuration.text = "00,00 / 60,00 sec"
 
         setFabImage(fab, icon = FAB_ICONS.MIC)
     }
@@ -161,7 +162,7 @@ class RecognitionFragment : Fragment() {
         handler.postDelayed(Runnable {
             if(mAudioRecorder.isRecording()) {
                 val duration = (mAudioRecorder.getDuration()).toFloat() / 1000
-                view.text = String.format("%.02f / 60.00 sec", duration)
+                view.text = String.format("%.02f / 60,00 sec", duration)
                 updateRecordDuration(view)
             }
         }, 100)
@@ -198,8 +199,8 @@ class RecognitionFragment : Fragment() {
 
                 for (entry in results.probabilities.entries) {
                     val row = TableRow(view.context)
-                    val label = TextView(view.context)
-                    val value = TextView(view.context)
+                    val label = layoutInflater.inflate(R.layout.table_column, null) as TextView
+                    val value = layoutInflater.inflate(R.layout.table_column, null) as TextView
 
                     row.layoutParams = TableRow.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,

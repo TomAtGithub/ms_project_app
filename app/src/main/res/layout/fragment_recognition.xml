@@ -34,6 +34,7 @@ tools:context=".fragment.RecognitionFragment">
         android:orientation="horizontal">
 
         <TextView
+            style="@style/text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Recording:" />
@@ -43,20 +44,23 @@ tools:context=".fragment.RecognitionFragment">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
+            style="@style/text"
             android:text="NO" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="Duration" />
+            style="@style/text"
+            android:text="Duration:" />
 
         <TextView
             android:id="@+id/record_duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="0" />
+            style="@style/text"
+            android:text="00,00 / 60,00 sec" />
     </LinearLayout>
 
     <TableLayout
