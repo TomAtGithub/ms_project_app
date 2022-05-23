@@ -36,42 +36,99 @@
     <string name="recognition_headline">Emotion Classification</string>
     <string name="recognition_task_name">Test Run</string>
     <string name="recognition_task">
-        This is the Test Run. It will make you familiar with the app.
-        Tab on the action button on the bottom left to start the voice recording
-        and tab it again to stop it.
+        <![CDATA[
+        <p>This is the test run. It will make you familiar with the app.
+        Please speak in <strong>English</strong> and record around <strong>60 seconds</strong>.</p>
+        <br/>
+        <p>How to use the App:</p>
+        <em>
+        <ol>
+        <li>Press on the button on the bottom left to start the recording</li>
+        <li>Press the button again to stop the recording</li>
+        <li>Press it again to go to the next task</li>
+        </ol>
+        </em>
+        ]]>
     </string>
 
     <string name="recognition_emo0_headline">Emotion Classification</string>
     <string name="recognition_emo0_task_name">Neutral Emotion</string>
     <string name="recognition_emo0_task">
-        Describe your surroundings and the weather in a neutral way
+        <![CDATA[
+        <p>Record a voice message in a neutral state.</p>
+        <br/>
+        <p>For Example:</p>
+        <em>
+        <ul>
+        <li>Describe your surroundings and the weather in a neutral way</li>
+        </ul>
+        </em>
+        ]]>
     </string>
 
     <string name="recognition_emo1_headline">Emotion Classification</string>
     <string name="recognition_emo1_task_name">Happy Emotion</string>
     <string name="recognition_emo1_task">
-        Record a happy emotion
-    </string>neutral
+        <![CDATA[
+        <p>Record a voice message in a happy emotion.</p>
+        <br/>
+        <p>For Example:</p>
+        <em>
+        <ul>
+        <li>Tell some happy or funny stories which happened to you or someone else today or during the week.</li>
+        <li>Talk about how you handled a successful project at work or in the university which you are proud of.</li>
+        </ul>
+        </em>
+        ]]>
+    </string>
 
     <string name="recognition_emo2_headline">Emotion Classification</string>
     <string name="recognition_emo2_task_name">Sad Emotion</string>
     <string name="recognition_emo2_task">
-        Record a sad emotion
+        <![CDATA[
+        <p>Record a voice message about something which makes you really sad.</p>
+        <br/>
+        <p>For Example:</p>
+        <em>
+        <ul>
+        <li>Tell a sad story which happened to you or someone else today or during the week.</li>
+        <li>Talk about something which you regret doing or not doing.</li>
+        </ul>
+        </em>
+        ]]>
     </string>
 
     <string name="recognition_emo3_headline">Emotion Classification</string>
     <string name="recognition_emo3_task_name">Angry Emotion</string>
     <string name="recognition_emo3_task">
-        Your flatmate Jerry, did again "forgott" to clean the dishes. Even though you told him yesterday.\n
-        It is going like this since weeks now.\n
-        Record a angry voice message and tell jerry that you can not live like this anymore and he should clean the dishes immediately when he comes home.
-        Otherwise you might change the password of your netflix account which he also uses.
+        <![CDATA[
+        <p>Record a voice message where you complain about something which makes you really angry.</p>
+        <br/>
+        <p>For Example:</p>
+        <em>
+        <ul>
+        <li>The wrong behaviour of a stranger or one of your friends.</li>
+        <li>How your boss or your professors requesting you to do much more work, ignoring the fact that you also have other things to do.</li>
+        <li>Your imaginary flatmate Jerry which did AGAIN “forgot” to clean the dishes.</li>
+        </ul>
+        </em>
+        ]]>
     </string>
 
     <string name="recognition_emo4_headline">Emotion Classification</string>
     <string name="recognition_emo4_task_name">Fearful Emotion</string>
     <string name="recognition_emo4_task">
-        Record a fearful emotion
+        <![CDATA[
+        <p>Talk about a creepy experience or something which scared you.</p>
+        <br/>
+        <p>For Example:</p>
+        <em>
+        <ul>
+        <li>A creepy person which followed you on you way home.</li>
+        <li>A mad or insane person you had contact with or heard about.</li>
+        </ul>
+        </em>
+        ]]>
     </string>
 
     <string name="share_headline">Share your Results</string>

@@ -2,6 +2,8 @@ package com.example.ms_project_android.fragment
 
 import android.os.Bundle
 import android.os.Handler
+import android.text.Html
+import android.text.Spanned
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +24,11 @@ private const val ARG_PARAM2 = "param2"
 private const val LOG_TAG = "RecognitionFragment"
 private const val OPEN_SMILE_CONFIG = "MFCC12_0_D_A.func.conf"
 private const val TF_MODEL_NAME = "Emotion_Voice_Detection_Opensmile_MFCC_2.tflite"
+private enum class FAB_ICONS {
+    MIC,
+    STOP,
+    NEXT
+}
 
 
 class RecognitionFragment : Fragment() {
@@ -73,6 +80,7 @@ class RecognitionFragment : Fragment() {
                 this.startRun(view, fab)
             }
             fab.visibility = View.VISIBLE
+            initView(view, fab)
         } else {
             Log.e(LOG_TAG, "Could not get activity")
         }
@@ -117,12 +125,35 @@ class RecognitionFragment : Fragment() {
 
         table.removeAllViews()
 
-        tvTitle.text = getString(resources.getIdentifier( "recognition_emo${emoState}_task_name", "string", mConfig.packageName))
-        tvText.text = getString(resources.getIdentifier( "recognition_emo${emoState}_task", "string", mConfig.packageName))
+        tvTitle.text = parseHtml(emoState, title = true)
+        tvText.text = parseHtml(emoState)
         tvRecordState.text = "NO"
         tvRecordDuration.text = "0"
 
-        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_mic_24))
+        setFabImage(fab, icon = FAB_ICONS.MIC)
+    }
+
+    private fun setFabImage(fab: FloatingActionButton, icon: FAB_ICONS) {
+        val drawableId = when(icon) {
+            FAB_ICONS.MIC -> R.drawable.ic_baseline_mic_24
+            FAB_ICONS.NEXT -> R.drawable.ic_baseline_navigate_next_24
+            FAB_ICONS.STOP -> R.drawable.ic_baseline_stop_24
+        }
+
+        val drawable = resources.getDrawable(drawableId, null)
+        fab.setImageDrawable(drawable)
+    }
+
+    private fun parseHtml(emotionId: Int, title: Boolean = false): Spanned {
+        val suffix = if (title) "_name" else ""
+        val middlePart = if(emotionId < 0) "" else "_emo$emotionId"
+        val stringName = "recognition${middlePart}_task$suffix"
+
+        Log.d(LOG_TAG, "parseHTML $stringName")
+
+        val stringId = resources.getIdentifier(stringName, "string", mConfig.packageName)
+        val string = getString(stringId)
+        return Html.fromHtml(string, Html.FROM_HTML_MODE_COMPACT)
     }
 
     private fun updateRecordDuration(view: TextView) {
@@ -143,7 +174,7 @@ class RecognitionFragment : Fragment() {
         val tvRecordDuration = view.findViewById<TextView>(R.id.record_duration)
 
         tvRecordState.text = "YES"
-        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_stop_24))
+        setFabImage(fab, icon = FAB_ICONS.STOP)
 
         updateRecordDuration(tvRecordDuration)
     }
@@ -152,7 +183,7 @@ class RecognitionFragment : Fragment() {
         val tvRecordState = view.findViewById<TextView>(R.id.record_state)
         tvRecordState.text = "NO"
 
-        fab.setImageDrawable(resources.getDrawable(R.drawable.ic_baseline_navigate_next_24))
+        setFabImage(fab, icon = FAB_ICONS.NEXT)
     }
 
     private fun runClassification(view: View) {
