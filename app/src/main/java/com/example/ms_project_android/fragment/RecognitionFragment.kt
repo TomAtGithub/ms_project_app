@@ -234,9 +234,10 @@ class RecognitionFragment : Fragment() {
     }
 
     private fun saveResults(results: ClassificationResults, autoencoder_results: ClassificationResults) {
+        val duration = mAudioRecorder.getDuration().toString()
         if (emotionIndex >= 0) {
-            mAudioClassifier.saveResults(results, emotion_states[emotionIndex])
-            autoencoderClassifier.saveResults(autoencoder_results, emotion_states[emotionIndex])
+            mAudioClassifier.saveResults(results, emotion_states[emotionIndex], duration)
+            autoencoderClassifier.saveResults(autoencoder_results, emotion_states[emotionIndex], duration)
         }
     }
 }

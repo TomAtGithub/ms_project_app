@@ -104,7 +104,7 @@ class AudioClassifier(context: Context, autoencoder: Boolean = false) {
         }
     }
 
-    fun saveResults(results: ClassificationResults, emotionId: Int): Boolean{
+    fun saveResults(results: ClassificationResults, emotionId: Int, duration: String): Boolean{
         val emotion = getEmotionLabel(emotionId) ?: return false
 
         var labels = getEmotionLabels()
@@ -113,8 +113,9 @@ class AudioClassifier(context: Context, autoencoder: Boolean = false) {
         for(label in labels) {
             values.add(results.probabilities[label].toString())
         }
-        labels = labels.plus("requested")
+        labels = labels.plus(arrayOf("requested", "duration"))
         values.add(emotion)
+        values.add(duration)
 
         Log.d(LOG_TAG, "saveResults, ${results.probabilities.toString()}")
         Log.d(LOG_TAG, "saveResults, $emotion $emotionId ${labels.contentToString()} ${values.toString()}")
