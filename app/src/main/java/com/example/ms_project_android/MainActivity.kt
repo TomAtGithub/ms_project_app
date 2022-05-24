@@ -63,6 +63,7 @@ class MainActivity : AppCompatActivity() {
         GlobalConfig.init(this, externalCacheDir?.path!!)
         val csvHandler = CSVHandler()
         csvHandler.deleteFile(GlobalConfig.getInstance().evaluationCsvPath)
+        csvHandler.deleteFile(GlobalConfig.getInstance().encoderEvaluationCsvPath)
     }
 
     override fun onRequestPermissionsResult(

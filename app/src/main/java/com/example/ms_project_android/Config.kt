@@ -16,7 +16,7 @@ class GlobalConfig private constructor() {
                     recordPath = "$cacheDir/record.wav",
                     featuresCsvPath = "$cacheDir/mfcc.func.csv",
                     evaluationCsvPath = "$cacheDir/evaluation.csv",
-                    encoderEvaluationCsvPath = "$cacheDir/evaluation.csv",
+                    encoderEvaluationCsvPath = "$cacheDir/evaluation_autoencoder.csv",
                     openSmileConfigPath = Utils.getAsset(context, OPEN_SMILE_CONFIG).path,
                     packageName = context.packageName
                 )

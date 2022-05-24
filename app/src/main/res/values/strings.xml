@@ -20,15 +20,15 @@
         We will ask you to record voice messages in 5 different emotional states: neutral, happy, sad, angry and fearful.
         We provide examples for each emotion to inspire you. But you can also come up with your own ideas.
         Take your time to think about a good story which you can tell in the given emotional state.
-        Each record should be in English and around 60 seconds.
-        It is best if your are in a silent environment while recording.
+        Each recording should be in English and around 60 seconds long.
+        We would also like to ask you to record the messages in a silent environment.
     </string>
     <string name="info_privacy">
         In the end we will ask you to share the results with us for evaluation purposes.
-        Your records are analyzed on the device (NOT in the cloud)
+        Your recordings are analyzed on the device (NOT in the cloud)
         and will NOT be part of the shared data.
-        Only the requested emotional state and the classification results are part of it.
-        If you continue with the next steps you allow us to automatically analyze you records.
+        The shared data for each recording will consist only out of the intended emotional state and the output of the classifier (which are just predicted probabilities for each emotion).
+        If you continue with the next steps you will allow us to automatically analyze you recordings (but the data will not be automatically shared without your consent).
     </string>
 
     <string name="recognition_headline">Emotion Classification</string>
@@ -36,12 +36,12 @@
     <string name="recognition_task">
         <![CDATA[
         <p>This is the test run. It will make you familiar with the app.
-        Please speak in <strong>English</strong> and record around <strong>60 seconds</strong>.</p>
+        Please speak in <strong>English</strong> and record for around <strong>60 seconds</strong>.</p>
         <br/>
         <p>How to use the App:</p>
         <em>
         <ol>
-        <li>Press on the button on the bottom right to start the recording</li>
+        <li>Press the button on the bottom right to start the recording</li>
         <li>Press the button again to stop the recording</li>
         <li>Press it again to go to the next task</li>
         </ol>
@@ -131,9 +131,11 @@
 
     <string name="share_headline">Share your Results</string>
     <string name="share_info">
-        Thank you for helping us to evaluate our project work.\n
-        Please share you results now with us.\n
-        As mentioned in the beginning only the statistics will be shared and not you records.
+        Thank you for helping us to evaluate our project work!\n\n
+        We kindly ask you to share you results now with us.\n
+        As mentioned in the beginning, only the statistics will be shared with us and not your audio recordings.\n\n
+
+        We would also like to kindly ask you to select your gender and age group as this will help us with identifying any potential problems with the model, but note that you do not have to check anything if you are not comfortable with sharing this information.\n\n
     </string>
 
 </resources>

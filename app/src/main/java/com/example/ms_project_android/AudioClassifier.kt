@@ -92,7 +92,7 @@ class AudioClassifier(context: Context, autoencoder: Boolean = false) {
             else input_features = features
 
             val outputMap = hashMapOf<Int, Any>(
-                0 to arrayOf(FloatArray(5))
+                0 to arrayOf(FloatArray(N_CLASSES))
             )
 
             interpreter.runForMultipleInputsOutputs(input_features, outputMap)
@@ -157,9 +157,7 @@ class AudioClassifier(context: Context, autoencoder: Boolean = false) {
                 modelByteBuffer = loadModelFile(context.assets, MODEL_FILENAME)
             }
             if(modelByteBuffer != null) {
-                val tfLite =  Interpreter(modelByteBuffer)
-                tfLite.resizeInput(0, IntArray(375))
-                return tfLite
+                return Interpreter(modelByteBuffer)
             }
             return null
         } catch (e: IOException) {

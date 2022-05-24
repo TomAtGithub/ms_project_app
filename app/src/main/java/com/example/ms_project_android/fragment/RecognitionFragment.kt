@@ -36,7 +36,6 @@ private enum class FAB_ICONS {
 private val emotion_states = intArrayOf(0, 1, 2, 3, 4)
 
 class RecognitionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var stateNext = false
@@ -45,6 +44,7 @@ class RecognitionFragment : Fragment() {
     private lateinit var mAudioRecorder: AudioRecorder
     private lateinit var mFeatureExtractor: FeatureExtractor
     private lateinit var mAudioClassifier: AudioClassifier
+    private lateinit var autoencoderClassifier: AudioClassifier
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +82,7 @@ class RecognitionFragment : Fragment() {
             val fab = mainActivity.findViewById<FloatingActionButton>(R.id.fab)
 
             mAudioClassifier = AudioClassifier(mainActivity)
+            autoencoderClassifier = AudioClassifier(mainActivity, autoencoder = true)
 
             fab.setOnClickListener {
                 this.startRun(view, fab)
@@ -201,7 +202,9 @@ class RecognitionFragment : Fragment() {
 
         val ok = mFeatureExtractor.run(mConfig.recordPath)
         if(ok) {
-            val results = mAudioClassifier.classify(mFeatureExtractor.getFeatures())
+            val features = mFeatureExtractor.getFeatures()
+            val results = mAudioClassifier.classify(features)
+            val autoencoder_results = autoencoderClassifier.classify(features)
             if(results != null) {
                 Log.d(LOG_TAG, "${results.probabilities}")
 
@@ -225,12 +228,15 @@ class RecognitionFragment : Fragment() {
                     Log.d(LOG_TAG, "$entry")
                 }
 
-                saveResults(results)
+                if (autoencoder_results != null) saveResults(results, autoencoder_results)
             }
         }
     }
 
-    private fun saveResults(results: ClassificationResults) {
-        if (emotionIndex >= 0) mAudioClassifier.saveResults(results, emotion_states[emotionIndex])
+    private fun saveResults(results: ClassificationResults, autoencoder_results: ClassificationResults) {
+        if (emotionIndex >= 0) {
+            mAudioClassifier.saveResults(results, emotion_states[emotionIndex])
+            autoencoderClassifier.saveResults(autoencoder_results, emotion_states[emotionIndex])
+        }
     }
 }

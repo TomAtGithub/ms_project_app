@@ -17,6 +17,79 @@
         style="@style/text"
         android:text="@string/share_info" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Gender:"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    <RadioGroup
+        android:id="@+id/btn_gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_male"
+            android:text="Male"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_female"
+            android:text="Female"
+            android:checked="false"/>
+    </RadioGroup>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Age:"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    <RadioGroup
+        android:id="@+id/btn_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_10"
+            android:text="11-20"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_20"
+            android:text="21-30"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_30"
+            android:text="31-40"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_40"
+            android:text="41-50"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_50"
+            android:text="51-60"
+            android:checked="false"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btn_60"
+            android:text="61-70"
+            android:checked="false"/>
+    </RadioGroup>
+
+
     <Button
         android:id="@+id/btn_share"
         style="@style/button"

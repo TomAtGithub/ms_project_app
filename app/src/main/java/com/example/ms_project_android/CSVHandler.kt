@@ -44,21 +44,19 @@ class CSVHandler(autoencoder: Boolean = false) {
 
     fun write(input: Array<String>, header: Array<String>) {
         val config = GlobalConfig.getInstance()
-        var file: File? = null
+        var file: File
         if (autoencoder) {
-            file = File(config.evaluationCsvPath)
+            file = File(config.encoderEvaluationCsvPath)
         }
         else {
-            file = File(config.encoderEvaluationCsvPath)
+            file = File(config.evaluationCsvPath)
         }
         val separator = ","
 
-        if (file != null) {
-            if (!file.exists()) {
-                file.writeText(header.joinToString(separator) + "\n")
-            }
-            file.appendText(input.joinToString(separator) + "\n")
+        if (!file.exists()) {
+            file.writeText(header.joinToString(separator) + "\n")
         }
+        file.appendText(input.joinToString(separator) + "\n")
     }
 
     fun deleteFile(filePath: String) {
