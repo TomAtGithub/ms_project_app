@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.ms_project_android.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import org.w3c.dom.Text
+import java.util.*
+import kotlin.random.Random
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,13 +33,14 @@ private enum class FAB_ICONS {
     NEXT
 }
 
+private val emotion_states = intArrayOf(0, 1, 2, 3, 4)
 
 class RecognitionFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private var stateNext = false
-    private var stateEmotion = -1
+    private var emotionIndex = -1
     private lateinit var mConfig: Config
     private lateinit var mAudioRecorder: AudioRecorder
     private lateinit var mFeatureExtractor: FeatureExtractor
@@ -49,6 +52,9 @@ class RecognitionFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        // Randomly shuffle the emotion states so different orders are used
+        emotion_states.shuffle(Random(Calendar.getInstance().timeInMillis))
     }
 
     override fun onCreateView(
@@ -93,10 +99,11 @@ class RecognitionFragment : Fragment() {
         // emotion = 0 - 4
         // next = 5
 
-        Log.d(LOG_TAG, "startRun $stateNext $stateEmotion")
+        Log.d(LOG_TAG, "startRun $stateNext ${emotionIndex}")
+        Log.d(LOG_TAG, "emotion states: ${emotion_states.contentToString()}")
 
         if(stateNext) {
-            if(stateEmotion > 4) {
+            if(emotionIndex > 4) {
                 fab.visibility = View.GONE
                 findNavController().navigate(R.id.action_recognitionFragment_to_shareFragment)
             } else {
@@ -108,7 +115,7 @@ class RecognitionFragment : Fragment() {
                 stopRecording(view, fab)
                 runClassification(view)
                 stateNext = true
-                stateEmotion += 1
+                emotionIndex += 1
 //                stateEmotion += 5
             } else {
                 startRecording(view, fab)
@@ -122,7 +129,8 @@ class RecognitionFragment : Fragment() {
         val tvRecordState = view.findViewById<TextView>(R.id.record_state)
         val tvRecordDuration = view.findViewById<TextView>(R.id.record_duration)
         val table = view.findViewById<TableLayout>(R.id.recognition_table)
-        val emoState = stateEmotion
+        var emoState = -1
+        if (emotionIndex in 0..4) emoState = emotion_states[emotionIndex]
 
         table.removeAllViews()
 
@@ -223,6 +231,6 @@ class RecognitionFragment : Fragment() {
     }
 
     private fun saveResults(results: ClassificationResults) {
-        mAudioClassifier.saveResults(results, stateEmotion)
+        if (emotionIndex >= 0) mAudioClassifier.saveResults(results, emotion_states[emotionIndex])
     }
 }

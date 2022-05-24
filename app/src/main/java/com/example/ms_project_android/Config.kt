@@ -16,6 +16,7 @@ class GlobalConfig private constructor() {
                     recordPath = "$cacheDir/record.wav",
                     featuresCsvPath = "$cacheDir/mfcc.func.csv",
                     evaluationCsvPath = "$cacheDir/evaluation.csv",
+                    encoderEvaluationCsvPath = "$cacheDir/evaluation.csv",
                     openSmileConfigPath = Utils.getAsset(context, OPEN_SMILE_CONFIG).path,
                     packageName = context.packageName
                 )
@@ -32,6 +33,7 @@ data class Config(
     val recordPath: String,
     val featuresCsvPath: String,
     val evaluationCsvPath: String,
+    val encoderEvaluationCsvPath: String,
     val openSmileConfigPath: String,
     val packageName: String
 )

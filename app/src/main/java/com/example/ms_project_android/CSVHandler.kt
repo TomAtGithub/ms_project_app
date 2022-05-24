@@ -9,7 +9,9 @@ private const val DELIMITER = ";"
 private const val LOG_TAG = "CSVHandler"
 private const val N_FEATURES = 228
 
-class CSVHandler {
+class CSVHandler(autoencoder: Boolean = false) {
+    val autoencoder = autoencoder
+
     /**
      * Reads the csv file created by openSMILE.
      * Some values are null so I created an own implementation
@@ -42,13 +44,21 @@ class CSVHandler {
 
     fun write(input: Array<String>, header: Array<String>) {
         val config = GlobalConfig.getInstance()
-        val file = File(config.evaluationCsvPath)
+        var file: File? = null
+        if (autoencoder) {
+            file = File(config.evaluationCsvPath)
+        }
+        else {
+            file = File(config.encoderEvaluationCsvPath)
+        }
         val separator = ","
 
-        if(!file.exists()) {
-            file.writeText(header.joinToString(separator)+"\n")
+        if (file != null) {
+            if (!file.exists()) {
+                file.writeText(header.joinToString(separator) + "\n")
+            }
+            file.appendText(input.joinToString(separator) + "\n")
         }
-        file.appendText(input.joinToString(separator)+"\n")
     }
 
     fun deleteFile(filePath: String) {
