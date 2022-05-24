@@ -123,7 +123,7 @@ class AudioClassifier(context: Context, autoencoder: Boolean = false) {
             }
             if(modelByteBuffer != null) {
                 val tfLite =  Interpreter(modelByteBuffer)
-                tfLite.resizeInput(0, IntArray(375))
+                //tfLite.resizeInput(0, IntArray(375))
                 return tfLite
             }
             return null
