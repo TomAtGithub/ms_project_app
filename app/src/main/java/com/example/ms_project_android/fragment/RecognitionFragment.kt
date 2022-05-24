@@ -138,7 +138,7 @@ class RecognitionFragment : Fragment() {
         tvTitle.text = parseHtml(emoState, title = true)
         tvText.text = parseHtml(emoState)
         tvRecordState.text = "NO"
-        tvRecordDuration.text = "00,00 / 60,00 sec"
+        tvRecordDuration.text = "00,00 sec"
 
         setFabImage(fab, icon = FAB_ICONS.MIC)
     }
@@ -171,7 +171,7 @@ class RecognitionFragment : Fragment() {
         handler.postDelayed(Runnable {
             if(mAudioRecorder.isRecording()) {
                 val duration = (mAudioRecorder.getDuration()).toFloat() / 1000
-                view.text = String.format("%.02f / 60,00 sec", duration)
+                view.text = String.format("%.02f sec", duration)
                 updateRecordDuration(view)
             }
         }, 100)
