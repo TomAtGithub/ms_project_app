@@ -1,32 +1,11 @@
-# TODO
+# Speech Emotion Recognition
 
-- [x] create git repo
-- [x] Record Audio
-- [x] Save audio
-- [x] Play Audio
-- [x] Read file from external storage
-- [x] Run openSMILE
-- [x] Create mfcc
-- [ ] Try to make openSMILE mfcc like librosa mfcc
-- [ ] Create mfcc with 88 chars
-- [x] Read CSV
-- [x] remove Null values
-- [ ] Load model
-- [ ] Classify mfcc
-- [ ] Show label in GUI
-- [ ] Load, classify and save results.csv of example audio on start option
-- [ ] Evaluate dialog
-- [ ] share evaluation / send via mail / write result to view and then they have to screenshot it
-
-# What is working
-
-- 40mffc via openSMILE --> require 40mfcc model ideally trained by openSMILE (we have 40mfcc model)
-- Rec Wav Audio
-
-Next Steps
-- write final Paper
-- create Presentation
-- see TODO
+This Android App is a study project and is for evaluating the
+performance of a model for Speech Emotion Classificaton (SER)
+which was trained using on the CMU-MOSEJ Data set.
+The features are extracted using openSMILE
+- https://www.audeering.com/research/opensmile/
+- http://multicomp.cs.cmu.edu/resources/cmu-mosei-dataset/
 
 # Generate openSMILE config
 
